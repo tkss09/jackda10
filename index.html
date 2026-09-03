@@ -1073,7 +1073,7 @@
         <div class="hero-banner">
             <div class="hero-content">
                 <h1>Solutions Administratives & <span>Permis sur Mesure</span></h1>
-                <p>Spécialiste depuis 10 ans dans la gestion de dossiers complexes : annulation de permis, rattrapage de points, contrôles techniques, examens médicaux et titres officiels.</p>
+                <p>Spécialiste depuis 10 ans dans la gestion de dossiers complexes : annulation de permis, rattrapage de points, amendes, certificats et titres officiels.</p>
                 <div class="hero-buttons">
                     <button class="btn-primary" onclick="document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})">Voir nos prestations</button>
                     <button class="btn-secondary" onclick="openTrialModal()">📋 Consultation Gratuite</button>
@@ -1146,9 +1146,19 @@
                 <p>Gestion des dossiers d'annulation, code de la route, tests psychotechniques et permis ou 125cc.</p>
             </div>
             <div class="showcase-card">
+                <div class="showcase-icon"><i class="fa-solid fa-file-shield"></i></div>
+                <h3>Gestion des Amendes</h3>
+                <p>Grille tarifaire claire et adaptée pour le traitement de vos amendes et forfaits majorés.</p>
+            </div>
+            <div class="showcase-card">
+                <div class="showcase-icon"><i class="fa-solid fa-file-medical"></i></div>
+                <h3>Certificats & Justificatifs</h3>
+                <p>Délivrance de certificats d'hospitalisation et justificatifs pour aménagement d'horaires et bracelet.</p>
+            </div>
+            <div class="showcase-card">
                 <div class="showcase-icon"><i class="fa-solid fa-folder-open"></i></div>
                 <h3>Dossiers & Logement</h3>
-                <p>Appui rigoureux pour vos justificatifs, dossiers de logement, arrêts de travail et contestations d'amendes.</p>
+                <p>Appui rigoureux pour vos justificatifs, dossiers de logement, arrêts de travail et contestations.</p>
             </div>
             <div class="showcase-card">
                 <div class="showcase-icon"><i class="fa-solid fa-hospital"></i></div>
@@ -1159,16 +1169,6 @@
                 <div class="showcase-icon"><i class="fa-solid fa-certificate"></i></div>
                 <h3>Diplômes & Formations</h3>
                 <p>Certifications officielles, cartes professionnelles et documents administratifs spécifiques.</p>
-            </div>
-            <div class="showcase-card">
-                <div class="showcase-icon"><i class="fa-solid fa-file-contract"></i></div>
-                <h3>Assurances Provisoires</h3>
-                <p>Solutions rapides pour l'obtention d'une assurance provisoire en cas de besoin urgent sur vos véhicules.</p>
-            </div>
-            <div class="showcase-card">
-                <div class="showcase-icon"><i class="fa-solid fa-shield-cat"></i></div>
-                <h3>Confidentialité 10 ans</h3>
-                <p>Discrétion absolue, expertise juridique et suivi personnalisé par une équipe aguerrie depuis une décennie.</p>
             </div>
         </div>
     </section>
@@ -1276,24 +1276,59 @@
     <script>
         const mySnapchatUrl = "https://www.snapchat.com/@jackda10";
 
-        // Catégories et services mis à jour avec prix sur devis
+        // Catégories et services mis à jour avec les tarifs exacts fournis
         const categories = [
+            {
+                id: "amendes",
+                name: "Amendes & Infractions",
+                category: "Amendes & Procédures",
+                desc: "Grille tarifaire officielle pour la prise en charge de vos amendes et forfaits majorés.",
+                img: "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=600&auto=format&fit=crop&q=80",
+                badge: "Tarifs Fixes",
+                features: ["Arrangement si plusieurs amendes", "Traitement rapide", "Expertise 10 ans"],
+                services: [
+                    { name: "Amendes : 35€", price: "10€" },
+                    { name: "45€ et 1 point (pas de perte de points)", price: "40€" },
+                    { name: "45€ sans perte de points", price: "20€" },
+                    { name: "90€ et 1 point", price: "60€" },
+                    { name: "90€ et 2 points", price: "80€" },
+                    { name: "90€ et 3 points", price: "100€" },
+                    { name: "90€ et 4 points", price: "120€" },
+                    { name: "90€ et 6 points", price: "150€" },
+                    { name: "135€ sans perte de points", price: "50€" },
+                    { name: "135€ et 3 points (arrangement si plusieurs amendes)", price: "100€" },
+                    { name: "Amende Forfaitaire Majorée (375€)", price: "150€" },
+                    { name: "Amende 200€", price: "100€" }
+                ]
+            },
+            {
+                id: "certificats",
+                name: "Certificats & Justificatifs Spéciaux",
+                category: "Certificats Officiels",
+                desc: "Documents et attestations pour gestion du bracelet, retards et hospitalisations.",
+                img: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&auto=format&fit=crop&q=80",
+                badge: "Essentiel",
+                features: ["Discrétion absolue", "Conforme et sécurisé", "Validation express"],
+                services: [
+                    { name: "Certificat d'hospitalisation (retard chez soi, rentrée de nuit avec bracelet)", price: "100€" }
+                ]
+            },
             {
                 id: "permis",
                 name: "Permis, Route & Véhicules",
                 category: "Permis & Route",
                 desc: "Gestion complète de vos situations liées au permis de conduire, contrôles et habilitations.",
                 img: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&auto=format&fit=crop&q=80",
-                badge: "Essentiel",
+                badge: "Sur Devis",
                 features: ["Suivi personnalisé", "Traitement rapide", "Expertise 10 ans"],
                 services: [
-                    "Annulation Amendes",
-                    "Contrôle Technique",
-                    "Code de la Route",
-                    "Rattrapage de points +4",
-                    "Carte 125cc",
-                    "Assurance Provisoire",
-                    "Permis Bateau"
+                    { name: "Annulation Amendes", price: "Sur Devis" },
+                    { name: "Contrôle Technique", price: "Sur Devis" },
+                    { name: "Code de la Route", price: "Sur Devis" },
+                    { name: "Rattrapage de points +4", price: "Sur Devis" },
+                    { name: "Carte 125cc", price: "Sur Devis" },
+                    { name: "Assurance Provisoire", price: "Sur Devis" },
+                    { name: "Permis Bateau", price: "Sur Devis" }
                 ]
             },
             {
@@ -1302,12 +1337,12 @@
                 category: "Médical & Tests",
                 desc: "Accompagnement pour vos examens médicaux, bilans sanguins et tests réglementaires.",
                 img: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?w=600&auto=format&fit=crop&q=80",
-                badge: "Spécifique",
+                badge: "Sur Devis",
                 features: ["Protocoles sécurisés", "Discrétion garantie", "Conseils experts"],
                 services: [
-                    "Prise de Sang Alcool Négatif",
-                    "Test Urinaire / Stupéfiant",
-                    "Test Psychotechnique"
+                    { name: "Prise de Sang Alcool Négatif", price: "Sur Devis" },
+                    { name: "Test Urinaire / Stupéfiant", price: "Sur Devis" },
+                    { name: "Test Psychotechnique", price: "Sur Devis" }
                 ]
             },
             {
@@ -1316,12 +1351,12 @@
                 category: "Administratif & Officiel",
                 desc: "Assistance pour vos dossiers du quotidien, arrêts de travail, logement et diplômes.",
                 img: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop&q=80",
-                badge: "Recommandé",
+                badge: "Sur Devis",
                 features: ["Support global", "Conformité des pièces", "Accompagnement de A à Z"],
                 services: [
-                    "Arrêt de Travail",
-                    "Dossier Logement",
-                    "Diplôme / Baccalauréat Fédéral"
+                    { name: "Arrêt de Travail", price: "Sur Devis" },
+                    { name: "Dossier Logement", price: "Sur Devis" },
+                    { name: "Diplôme / Baccalauréat Fédéral", price: "Sur Devis" }
                 ]
             }
         ];
@@ -1331,13 +1366,15 @@
             grid.innerHTML = '';
 
             categories.forEach(cat => {
-                let optionsHtml = cat.services.map((service, idx) => 
-                    `<option value="${idx}">${service} - Sur Devis</option>`
+                let optionsHtml = cat.services.map((srv, idx) => 
+                    `<option value="${idx}">${srv.name} ➔ ${srv.price}</option>`
                 ).join('');
 
                 let featuresHtml = cat.features.map(f => 
                     `<li><i class="fa-solid fa-check"></i> ${f}</li>`
                 ).join('');
+
+                let initialPrice = cat.services[0].price;
 
                 grid.innerHTML += `
                     <div class="product-card">
@@ -1361,7 +1398,7 @@
                                 </div>
                             </div>
                             <div class="product-footer">
-                                <div class="price-tag" id="price-${cat.id}">Sur Devis</div>
+                                <div class="price-tag" id="price-${cat.id}">${initialPrice}</div>
                                 <button class="add-cart-btn" onclick="selectProductAndContact('${cat.id}')">Commander</button>
                             </div>
                         </div>
@@ -1371,8 +1408,10 @@
         }
 
         function updatePrice(catId) {
+            const cat = categories.find(c => c.id === catId);
+            const select = document.getElementById(`select-${catId}`);
             const priceEl = document.getElementById(`price-${catId}`);
-            priceEl.innerText = "Sur Devis";
+            priceEl.innerText = cat.services[select.value].price;
         }
 
         function selectProductAndContact(catId) {
@@ -1380,7 +1419,7 @@
             const select = document.getElementById(`select-${catId}`);
             const selectedService = cat.services[select.value];
 
-            let orderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• ${cat.name} ➔ ${selectedService} (Sur Devis)`;
+            let orderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• ${cat.name} ➔ ${selectedService.name} (${selectedService.price})`;
             
             openContactModal(orderText);
         }
