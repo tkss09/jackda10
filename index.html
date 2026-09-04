@@ -1037,6 +1037,7 @@
 </head>
 <body>
 
+    <!-- Diaporama d'arrière-plan avec des images de voitures sportives -->
     <div class="bg-slideshow" id="bgSlideshow">
         <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1600&auto=format&fit=crop&q=80');"></div>
         <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=1600&auto=format&fit=crop&q=80');"></div>
@@ -1312,7 +1313,7 @@
                 badge: "Tarifs Fixes",
                 features: ["Arrangement si plusieurs amendes", "Traitement rapide", "Expertise 10 ans"],
                 services: [
-                    { name: "Amende 35 €", price: "10 €", info: "Traitement de vos amendes à 35€." },
+                    { name: "Amende 35 €", price: "2 €", info: "Traitement de vos amendes à 35€." },
                     { name: "45€ et 1 point (pas de perte de points)", price: "40€", info: "Procédure spécifique pour éviter la perte de points." },
                     { name: "45€ sans perte de points", price: "20€", info: "Traitement rapide de l'amende." },
                     { name: "90€ et 1 point", price: "60€", info: "Gestion d'amende forfaitaire de 90€." },
@@ -1559,7 +1560,8 @@
             const select = document.getElementById(`select-${catId}`);
             const selectedService = cat.services[select.value];
 
-            let orderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• ${cat.name} ➔ ${selectedService.name} (${selectedService.price})`;
+            // Message dynamique intégrant le nom de la catégorie, le service et le prix
+            let orderText = `Bonjour JACKDA10, je souhaite commander dans la section "${cat.name}", le service : ${selectedService.name} = ${selectedService.price}.`;
             
             openContactModal(orderText);
         }
