@@ -1075,6 +1075,7 @@
         </div>
     </div>
 
+    <!-- MODAL DÉTAILS DU SERVICE & BOUTON COMMANDE SNAPCHAT -->
     <div class="modal-overlay" id="serviceDetailModal">
         <div class="contact-modal" style="text-align: left;">
             <div style="font-size: 0.72rem; color: #ef4444; font-weight: 800; text-transform: uppercase; margin-bottom: 5px;" id="modalCatName">Catégorie</div>
@@ -1085,9 +1086,29 @@
                 <span id="modalServicePrice" style="font-size: 1.2rem; font-weight: 800; color: #ef4444;">0€</span>
             </div>
             <div style="display: flex; gap: 10px; flex-direction: column;">
-                <button class="btn-primary" id="modalOrderBtn" style="width: 100%;">Commander cette prestation</button>
+                <button class="social-btn snapchat-btn" id="modalOrderBtn" style="width: 100%; padding: 14px; font-weight: 800;">
+                    <i class="fa-brands fa-snapchat fa-lg"></i> Commander via Snapchat
+                </button>
                 <span class="modal-close-text" style="text-align: center;" onclick="closeServiceDetailModal()">Fermer cette fenêtre</span>
             </div>
+        </div>
+    </div>
+
+    <!-- NOUVEAU POP-UP DE COMMANDE DIRECTE -->
+    <div class="modal-overlay" id="orderPopupModal">
+        <div class="contact-modal" style="text-align: center;">
+            <div style="width: 50px; height: 50px; background: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; color: #dc2626; font-size: 1.3rem;">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </div>
+            <h3 style="margin-bottom: 8px;">Récapitulatif de Commande</h3>
+            <p id="popupOrderSummary" style="font-size: 0.9rem; color: #fff; font-weight: 600; margin-bottom: 15px; background: rgba(255,255,255,0.04); padding: 12px; border-radius: 10px; border: 1px solid var(--border);">Service sélectionné</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px;">En cliquant ci-dessous, le message sera copié et vous serez redirigé vers notre Snapchat pour valider votre commande.</p>
+            <div class="social-buttons">
+                <button class="social-btn snapchat-btn" id="confirmOrderSnapBtn" style="padding: 14px; font-weight: 800;">
+                    <i class="fa-brands fa-snapchat fa-lg"></i> Valider et Commander sur Snapchat
+                </button>
+            </div>
+            <span class="modal-close-text" onclick="closeOrderPopup()">Annuler</span>
         </div>
     </div>
 
@@ -1506,7 +1527,7 @@
                                 <div class="price-tag" id="price-${cat.id}">${initialPrice}</div>
                                 <div class="btn-action-group">
                                     <button class="info-btn" onclick="openServiceDetailModal('${cat.id}')"><i class="fa-solid fa-circle-info"></i> Info</button>
-                                    <button class="add-cart-btn" onclick="selectProductAndContact('${cat.id}')">Commander</button>
+                                    <button class="add-cart-btn" onclick="openOrderPopup('${cat.id}')">Commander</button>
                                 </div>
                             </div>
                         </div>
@@ -1535,7 +1556,7 @@
             const orderBtn = document.getElementById('modalOrderBtn');
             orderBtn.onclick = function() {
                 closeServiceDetailModal();
-                selectProductAndContact(catId);
+                openOrderPopup(catId);
             };
 
             document.getElementById('serviceDetailModal').classList.add('open');
@@ -1545,14 +1566,29 @@
             document.getElementById('serviceDetailModal').classList.remove('open');
         }
 
-        function selectProductAndContact(catId) {
+        // --- GESTION DU POP-UP DE COMMANDE ---
+        let currentOrderText = "";
+
+        function openOrderPopup(catId) {
             const cat = categories.find(c => c.id === catId);
             const select = document.getElementById(`select-${catId}`);
             const selectedService = cat.services[select.value];
 
-            let orderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• ${cat.name} ➔ ${selectedService.name} (${selectedService.price})`;
+            currentOrderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• ${cat.name} ➔ ${selectedService.name} (${selectedService.price})`;
             
-            copyAndOpenSnapchat(orderText);
+            document.getElementById('popupOrderSummary').innerText = `${cat.name} : ${selectedService.name} (${selectedService.price})`;
+            document.getElementById('orderPopupModal').classList.add('open');
+
+            // Configurer le bouton de validation du pop-up
+            const confirmBtn = document.getElementById('confirmOrderSnapBtn');
+            confirmBtn.onclick = function() {
+                closeOrderPopup();
+                copyAndOpenSnapchat(currentOrderText);
+            };
+        }
+
+        function closeOrderPopup() {
+            document.getElementById('orderPopupModal').classList.remove('open');
         }
 
         function copyAndOpenSnapchat(text) {
