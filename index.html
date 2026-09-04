@@ -584,6 +584,7 @@
             padding-top: 15px;
             border-top: 1px solid var(--border);
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .price-tag {
@@ -592,11 +593,33 @@
             color: #ef4444;
         }
 
+        .btn-action-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .info-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border: 1px solid var(--border);
+            padding: 10px 12px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .info-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
         .add-cart-btn {
             background: #dc2626;
             color: #fff;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 16px;
             border-radius: 50px;
             font-weight: 800;
             font-size: 0.82rem;
@@ -1059,7 +1082,22 @@
         </div>
     </div>
 
-    <!-- HERO SECTION -->
+    <div class="modal-overlay" id="serviceDetailModal">
+        <div class="contact-modal" style="text-align: left;">
+            <div style="font-size: 0.72rem; color: #ef4444; font-weight: 800; text-transform: uppercase; margin-bottom: 5px;" id="modalCatName">Catégorie</div>
+            <h3 id="modalServiceName" style="margin-bottom: 12px; font-size: 1.3rem;">Nom du Service</h3>
+            <p id="modalServiceDesc" style="margin-bottom: 20px; color: var(--text-muted); line-height: 1.6;">Description détaillée du service sélectionné.</p>
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.85rem; font-weight: 700;">Tarif de la prestation :</span>
+                <span id="modalServicePrice" style="font-size: 1.2rem; font-weight: 800; color: #ef4444;">0€</span>
+            </div>
+            <div style="display: flex; gap: 10px; flex-direction: column;">
+                <button class="btn-primary" id="modalOrderBtn" style="width: 100%;">Commander cette prestation</button>
+                <span class="modal-close-text" style="text-align: center;" onclick="closeServiceDetailModal()">Fermer cette fenêtre</span>
+            </div>
+        </div>
+    </div>
+
     <section class="hero">
         <div class="hero-banner">
             <div class="hero-content">
@@ -1111,7 +1149,6 @@
         </div>
     </div>
 
-    <!-- CATALOGUE / SERVICES CATÉGORISÉS -->
     <section class="catalog" id="catalog-section">
         <div class="section-header">
             <div>
@@ -1122,7 +1159,6 @@
         <div class="product-grid" id="productGrid"></div>
     </section>
 
-    <!-- SECTION DÉTAILS -->
     <section class="features-showcase">
         <div class="section-header">
             <div>
@@ -1164,7 +1200,6 @@
         </div>
     </section>
 
-    <!-- TUTORIELS -->
     <section class="tutorial-section" id="tutorial-section">
         <div class="section-header">
             <div>
@@ -1191,7 +1226,6 @@
         </div>
     </section>
 
-    <!-- AVIS CLIENTS -->
     <section class="reviews-section">
         <div class="section-header">
             <div>
@@ -1238,7 +1272,6 @@
         </div>
     </section>
 
-    <!-- FAQ -->
     <section class="faq-section" id="faq-section">
         <div class="section-header" style="text-align: center; display: block;">
             <h2 class="section-title">Foire Aux Questions (FAQ)</h2>
@@ -1277,18 +1310,18 @@
                 badge: "Tarifs Fixes",
                 features: ["Arrangement si plusieurs amendes", "Traitement rapide", "Expertise 10 ans"],
                 services: [
-                    { name: "Amendes : 35€", price: "10€" },
-                    { name: "45€ et 1 point (pas de perte de points)", price: "40€" },
-                    { name: "45€ sans perte de points", price: "20€" },
-                    { name: "90€ et 1 point", price: "60€" },
-                    { name: "90€ et 2 points", price: "80€" },
-                    { name: "90€ et 3 points", price: "100€" },
-                    { name: "90€ et 4 points", price: "120€" },
-                    { name: "90€ et 6 points", price: "150€" },
-                    { name: "135€ sans perte de points", price: "50€" },
-                    { name: "135€ et 3 points (arrangement si plusieurs amendes)", price: "100€" },
-                    { name: "Amende Forfaitaire Majorée (375€)", price: "150€" },
-                    { name: "Amende 200€", price: "100€" }
+                    { name: "Amendes : 35€ ➔ 0€", price: "10€", info: "Traitement de vos amendes à 35€." },
+                    { name: "45€ et 1 point (pas de perte de points)", price: "40€", info: "Procédure spécifique pour éviter la perte de points." },
+                    { name: "45€ sans perte de points", price: "20€", info: "Traitement rapide de l'amende." },
+                    { name: "90€ et 1 point", price: "60€", info: "Gestion d'amende forfaitaire de 90€." },
+                    { name: "90€ et 2 points", price: "80€", info: "Gestion d'amende forfaitaire de 90€." },
+                    { name: "90€ et 3 points", price: "100€", info: "Gestion d'amende forfaitaire de 90€." },
+                    { name: "90€ et 4 points", price: "120€", info: "Gestion d'amende forfaitaire de 90€." },
+                    { name: "90€ et 6 points", price: "150€", info: "Gestion d'amende forfaitaire de 90€." },
+                    { name: "135€ sans perte de points", price: "50€", info: "Traitement d'amende de 135€." },
+                    { name: "135€ et 3 points (arrangement si plusieurs amendes)", price: "100€", info: "Possibilité d'arrangement pour plusieurs amendes groupées." },
+                    { name: "Amende Forfaitaire Majorée (375€)", price: "150€", info: "Traitement de l'amende majorée." },
+                    { name: "Amende 200€", price: "100€", info: "Prise en charge d'amende de 200€." }
                 ]
             },
             {
@@ -1300,7 +1333,7 @@
                 badge: "Essentiel",
                 features: ["Discrétion absolue", "Conforme et sécurisé", "Validation express"],
                 services: [
-                    { name: "Certificat d'hospitalisation (retard chez soi, rentrée de nuit avec bracelet)", price: "100€" }
+                    { name: "Certificat d'hospitalisation (retard chez soi, rentrée de nuit avec bracelet)", price: "100€", info: "Justificatif officiel d'hospitalisation pour couvrir vos retards ou obligations (bracelet de nuit)." }
                 ]
             },
             {
@@ -1312,13 +1345,13 @@
                 badge: "Sur Devis",
                 features: ["Suivi personnalisé", "Traitement rapide", "Expertise 10 ans"],
                 services: [
-                    { name: "Annulation Amendes", price: "Sur Devis" },
-                    { name: "Contrôle Technique", price: "Sur Devis" },
-                    { name: "Code de la Route", price: "Sur Devis" },
-                    { name: "Rattrapage de points +4", price: "Sur Devis" },
-                    { name: "Carte 125cc", price: "Sur Devis" },
-                    { name: "Assurance Provisoire", price: "Sur Devis" },
-                    { name: "Permis Bateau", price: "Sur Devis" }
+                    { name: "Annulation Amendes", price: "Sur Devis", info: "Étude personnalisée pour l'annulation de vos amendes." },
+                    { name: "Contrôle Technique", price: "Sur Devis", info: "Accompagnement pour vos démarches de contrôle technique." },
+                    { name: "Code de la Route", price: "Sur Devis", info: "Assistance pour votre examen du code de la route." },
+                    { name: "Rattrapage de points +4", price: "Sur Devis", info: "Procédure d'accompagnement pour le stage ou rattrapage de points." },
+                    { name: "Carte 125cc", price: "Sur Devis", info: "Démarches pour carte ou formation 125cc." },
+                    { name: "Assurance Provisoire", price: "Sur Devis", info: "Mise en place de solutions d'assurance provisoire." },
+                    { name: "Permis Bateau", price: "Sur Devis", info: "Assistance complète pour votre permis bateau." }
                 ]
             },
             {
@@ -1330,9 +1363,9 @@
                 badge: "Sur Devis",
                 features: ["Protocoles sécurisés", "Discrétion garantie", "Conseils experts"],
                 services: [
-                    { name: "Prise de Sang Alcool Négatif", price: "Sur Devis" },
-                    { name: "Test Urinaire / Stupéfiant", price: "Sur Devis" },
-                    { name: "Test Psychotechnique", price: "Sur Devis" }
+                    { name: "Prise de Sang Alcool Négatif", price: "Sur Devis", info: "Accompagnement pour les protocoles de prise de sang." },
+                    { name: "Test Urinaire / Stupéfiant", price: "Sur Devis", info: "Conseils et accompagnement pour tests de dépistage." },
+                    { name: "Test Psychotechnique", price: "Sur Devis", info: "Préparation et démarches pour vos tests psychotechniques." }
                 ]
             },
             {
@@ -1341,12 +1374,26 @@
                 category: "Administratif & Officiel",
                 desc: "Assistance pour vos dossiers du quotidien, arrêts de travail, logement et diplômes.",
                 img: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop&q=80",
-                badge: "Sur Devis",
+                badge: "Populaire",
                 features: ["Support global", "Conformité des pièces", "Accompagnement de A à Z"],
                 services: [
-                    { name: "Arrêt de Travail", price: "Sur Devis" },
-                    { name: "Dossier Logement", price: "Sur Devis" },
-                    { name: "Diplôme / Baccalauréat Fédéral", price: "Sur Devis" }
+                    { 
+                        name: "Création auto-entreprise", 
+                        price: "Sur Devis", 
+                        info: "<strong>CRÉATION AUTO ENTREPRISE :</strong><br><br>• Carte d'identité recto verso<br>• Numéro de secu (les 15 numéros avec la clé)<br>• Justificatif de domicile (-3 mois)<br>• Nom et prénoms des parents (tous les prénoms figurant sur la carte d'identité)<br>• Numéro de tél<br>• Justificatif permettant l'ouverture de l'autoentreprise selon le secteur (diplôme, certificat...)" 
+                    },
+                    { 
+                        name: "Avis d'impôt", 
+                        price: "100€", 
+                        info: "<strong>Avis impôt - Informations à fournir :</strong><br><br>• Nom<br>• Prénom<br>• Adresse<br>• Montant de l'avis d'imposition<br>• Situation de famille : Marié(e) / Pacsé(e) / Célibataire / Veuf(ve)<br>• Nombre d'enfants" 
+                    },
+                    { 
+                        name: "Arrêt de Travail", 
+                        price: "30€", 
+                        info: "<strong>Documents et informations à fournir :</strong><br><br>• N° de Sécurité sociale (15 chiffres avec la clé)<br>• Nom<br>• Prénom<br>• Adresse<br>• Date de début de l'arrêt<br>• Date de fin de l'arrêt<br>• Motif" 
+                    },
+                    { name: "Dossier Logement", price: "Sur Devis", info: "Appui et constitution de votre dossier de logement." },
+                    { name: "Diplôme / Baccalauréat Fédéral", price: "Sur Devis", info: "Accompagnement relatif à vos diplômes ou qualifications." }
                 ]
             }
         ];
@@ -1389,7 +1436,10 @@
                             </div>
                             <div class="product-footer">
                                 <div class="price-tag" id="price-${cat.id}">${initialPrice}</div>
-                                <button class="add-cart-btn" onclick="selectProductAndContact('${cat.id}')">Commander</button>
+                                <div class="btn-action-group">
+                                    <button class="info-btn" onclick="openServiceDetailModal('${cat.id}')"><i class="fa-solid fa-circle-info"></i> Info</button>
+                                    <button class="add-cart-btn" onclick="selectProductAndContact('${cat.id}')">Commander</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1402,6 +1452,29 @@
             const select = document.getElementById(`select-${catId}`);
             const priceEl = document.getElementById(`price-${catId}`);
             priceEl.innerText = cat.services[select.value].price;
+        }
+
+        function openServiceDetailModal(catId) {
+            const cat = categories.find(c => c.id === catId);
+            const select = document.getElementById(`select-${catId}`);
+            const selectedService = cat.services[select.value];
+
+            document.getElementById('modalCatName').innerText = cat.category;
+            document.getElementById('modalServiceName').innerText = selectedService.name;
+            document.getElementById('modalServiceDesc').innerHTML = selectedService.info || cat.desc;
+            document.getElementById('modalServicePrice').innerText = selectedService.price;
+
+            const orderBtn = document.getElementById('modalOrderBtn');
+            orderBtn.onclick = function() {
+                closeServiceDetailModal();
+                selectProductAndContact(catId);
+            };
+
+            document.getElementById('serviceDetailModal').classList.add('open');
+        }
+
+        function closeServiceDetailModal() {
+            document.getElementById('serviceDetailModal').classList.remove('open');
         }
 
         function selectProductAndContact(catId) {
