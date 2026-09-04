@@ -1062,15 +1062,6 @@
         </div>
     </header>
 
-    <div class="modal-overlay" id="contactModal">
-        <div class="contact-modal">
-            <h3>🚀 Finalisez votre demande !</h3>
-            <p>Clique ci-dessous pour m'envoyer les détails de votre dossier sur Snapchat :</p>
-            <div class="social-buttons" id="socialButtonsContainer"></div>
-            <span class="modal-close-text" onclick="closeContactModal()">Fermer cette fenêtre</span>
-        </div>
-    </div>
-
     <div class="modal-overlay" id="trialModal">
         <div class="contact-modal">
             <h3>📋 Obtenez votre Consultation Gratuite !</h3>
@@ -1561,23 +1552,18 @@
 
             let orderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• ${cat.name} ➔ ${selectedService.name} (${selectedService.price})`;
             
-            openContactModal(orderText);
+            copyAndOpenSnapchat(orderText);
         }
 
-        function openContactModal(customText = "Bonjour JACKDA10, je souhaite passer commande concernant une démarche administrative.") {
-            const buttonsContainer = document.getElementById('socialButtonsContainer');
-
-            buttonsContainer.innerHTML = `
-                <a href="${mySnapchatUrl}" target="_blank" class="social-btn snapchat-btn" onclick="copyOrderForSnap('${customText.replace(/'/g, "\\'")}')">
-                    <i class="fa-brands fa-snapchat fa-lg"></i> Commander via Snapchat
-                </a>
-            `;
-
-            document.getElementById('contactModal').classList.add('open');
-        }
-
-        function closeContactModal() {
-            document.getElementById('contactModal').classList.remove('open');
+        function copyAndOpenSnapchat(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showCopyNotification();
+                setTimeout(() => {
+                    window.open(mySnapchatUrl, '_blank');
+                }, 600);
+            }).catch(() => {
+                window.open(mySnapchatUrl, '_blank');
+            });
         }
 
         function openTrialModal() {
@@ -1592,12 +1578,9 @@
             const trialText = "Bonjour JACKDA10, je souhaite obtenir une consultation gratuite concernant mes démarches administratives.";
             navigator.clipboard.writeText(trialText).then(() => {
                 showCopyNotification();
-            });
-        }
-
-        function copyOrderForSnap(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showCopyNotification();
+                setTimeout(() => {
+                    window.open(mySnapchatUrl, '_blank');
+                }, 600);
             });
         }
 
