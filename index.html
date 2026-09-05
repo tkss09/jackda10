@@ -572,13 +572,14 @@
 
         .duration-select {
             width: 100%;
-            padding: 10px 12px;
+            min-width: 100%;
+            padding: 12px 15px;
             background: rgba(255, 255, 255, 0.04) url("data:image/svg+xml;utf8,<svg fill='%23ffffff' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 12px center;
             background-size: 16px;
             border: 2px solid #dc2626;
             border-radius: 10px;
             color: #fff;
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             font-weight: 600;
             outline: none;
             cursor: pointer;
@@ -597,6 +598,10 @@
         .duration-select option {
             background: #121218;
             color: #fff;
+            white-space: normal;
+            word-wrap: break-word;
+            padding: 12px;
+            font-size: 0.82rem;
         }
 
         .product-footer {
@@ -1381,25 +1386,25 @@
         const categories = [
             {
                 id: "amendes",
-                name: "Amendes & Infractions",
+                name: "Amendes & Procédures",
                 category: "Amendes & Procédures",
                 desc: "Grille tarifaire officielle pour la prise en charge de vos amendes et forfaits majorés.",
-                img: "https://images.unsplash.com/photo-1450133064473-71024230f91b?w=600&auto=format&fit=crop&q=80",
+                img: "image_886e24.jpg",
                 badge: "Tarifs Fixes",
                 features: ["Arrangement si plusieurs amendes", "Traitement rapide", "Expertise 10 ans"],
                 services: [
-                    { name: "Amende initiale de 35 €, 10 € seulement chez nous", price: "10 €", info: "Traitement de vos amendes à 35€." },
-                    { name: "Amende initiale de 45 € (avec 1 point), 40 € seulement chez nous", price: "40 €", info: "Procédure spécifique pour éviter la perte de points." },
-                    { name: "Amende initiale de 45 € (sans perte de points), 20 € seulement chez nous", price: "20 €", info: "Traitement rapide de l'amende." },
-                    { name: "Amende initiale de 90 € (avec 1 point), 60 € seulement chez nous", price: "60 €", info: "Gestion d'amende forfaitaire de 90€." },
-                    { name: "Amende initiale de 90 € (avec 2 points), 80 € seulement chez nous", price: "80 €", info: "Gestion d'amende forfaitaire de 90€." },
-                    { name: "Amende initiale de 90 € (avec 3 points), 100 € seulement chez nous", price: "100 €", info: "Gestion d'amende forfaitaire de 90€." },
-                    { name: "Amende initiale de 90 € (avec 4 points), 120 € seulement chez nous", price: "120 €", info: "Gestion d'amende forfaitaire de 90€." },
-                    { name: "Amende initiale de 90 € (avec 6 points), 150 € seulement chez nous", price: "150 €", info: "Gestion d'amende forfaitaire de 90€." },
-                    { name: "Amende initiale de 135 € (sans perte de points), 50 € seulement chez nous", price: "50 €", info: "Traitement d'amende de 135€." },
-                    { name: "Amende initiale de 135 € (avec 3 points), 100 € seulement chez nous", price: "100 €", info: "Possibilité d'arrangement pour plusieurs amendes groupées." },
-                    { name: "Amende Forfaitaire Majorée initiale de 375 €, 150 € seulement chez nous", price: "150 €", info: "Traitement de l'amende majorée." },
-                    { name: "Amende initiale de 180 €, 100 € seulement chez nous", price: "100 €", info: "Prise en charge d'amende de 180€." }
+                    { name: "Amende initiale de 35 € ➔ 10 € chez nous", price: "10 €", info: "Traitement de vos amendes à 35€." },
+                    { name: "Amende initiale de 45 € (avec 1 point) ➔ 40 € chez nous", price: "40 €", info: "Procédure spécifique pour éviter la perte de points." },
+                    { name: "Amende initiale de 45 € (sans perte de points) ➔ 20 € chez nous", price: "20 €", info: "Traitement rapide de l'amende." },
+                    { name: "Amende initiale de 90 € (avec 1 point) ➔ 60 € chez nous", price: "60 €", info: "Gestion d'amende forfaitaire de 90€." },
+                    { name: "Amende initiale de 90 € (avec 2 points) ➔ 80 € chez nous", price: "80 €", info: "Gestion d'amende forfaitaire de 90€." },
+                    { name: "Amende initiale de 90 € (avec 3 points) ➔ 100 € chez nous", price: "100 €", info: "Gestion d'amende forfaitaire de 90€." },
+                    { name: "Amende initiale de 90 € (avec 4 points) ➔ 120 € chez nous", price: "120 €", info: "Gestion d'amende forfaitaire de 90€." },
+                    { name: "Amende initiale de 90 € (avec 6 points) ➔ 150 € chez nous", price: "150 €", info: "Gestion d'amende forfaitaire de 90€." },
+                    { name: "Amende initiale de 135 € (sans perte de points) ➔ 50 € chez nous", price: "50 €", info: "Traitement d'amende de 135€." },
+                    { name: "Amende initiale de 135 € (avec 3 points) ➔ 100 € chez nous", price: "100 €", info: "Possibilité d'arrangement pour plusieurs amendes groupées." },
+                    { name: "Amende Forfaitaire Majorée initiale de 375 € ➔ 150 € chez nous", price: "150 €", info: "Traitement de l'amende majorée." },
+                    { name: "Amende initiale de 180 € ➔ 100 € chez nous", price: "100 €", info: "Prise en charge d'amende de 180€." }
                 ]
             },
             {
