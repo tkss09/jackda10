@@ -557,7 +557,8 @@
         .duration-select {
             width: 100%;
             padding: 10px 12px;
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.04) url("data:image/svg+xml;utf8,<svg fill='%23ffffff' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 10px center;
+            background-size: 16px;
             border: 1px solid var(--border);
             border-radius: 10px;
             color: #fff;
@@ -566,11 +567,14 @@
             outline: none;
             cursor: pointer;
             transition: var(--transition);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
         }
 
         .duration-select:hover, .duration-select:focus {
             border-color: var(--accent);
-            background: rgba(220, 38, 38, 0.05);
+            background-color: rgba(220, 38, 38, 0.05);
         }
 
         .duration-select option {
@@ -1075,7 +1079,6 @@
         </div>
     </div>
 
-    <!-- MODAL DÉTAILS DU SERVICE & BOUTON COMMANDE SNAPCHAT -->
     <div class="modal-overlay" id="serviceDetailModal">
         <div class="contact-modal" style="text-align: left;">
             <div style="font-size: 0.72rem; color: #ef4444; font-weight: 800; text-transform: uppercase; margin-bottom: 5px;" id="modalCatName">Catégorie</div>
@@ -1094,7 +1097,6 @@
         </div>
     </div>
 
-    <!-- NOUVEAU POP-UP DE COMMANDE DIRECTE -->
     <div class="modal-overlay" id="orderPopupModal">
         <div class="contact-modal" style="text-align: center;">
             <div style="width: 50px; height: 50px; background: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; color: #dc2626; font-size: 1.3rem;">
