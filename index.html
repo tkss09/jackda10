@@ -42,6 +42,22 @@
             -webkit-text-size-adjust: 100%;
         }
 
+        /* --- ANIMATION CONTOURS ROUGES CLIGNOTANTS POUR LES MENUS DÉROULANTS --- */
+        @keyframes redBlinkBorder {
+            0% {
+                border-color: #dc2626;
+                box-shadow: 0 0 5px rgba(220, 38, 38, 0.4), inset 0 0 5px rgba(220, 38, 38, 0.2);
+            }
+            50% {
+                border-color: #ff1a1a;
+                box-shadow: 0 0 15px rgba(255, 26, 26, 0.9), inset 0 0 10px rgba(255, 26, 26, 0.5);
+            }
+            100% {
+                border-color: #dc2626;
+                box-shadow: 0 0 5px rgba(220, 38, 38, 0.4), inset 0 0 5px rgba(220, 38, 38, 0.2);
+            }
+        }
+
         /* --- DIAPORAMA D'ARRIÈRE-PLAN ANIMÉ (VOITURES SPORTIVES) --- */
         .bg-slideshow {
             position: fixed;
@@ -554,17 +570,12 @@
             display: block;
         }
 
-        @keyframes arrowBlink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.2; }
-        }
-
         .duration-select {
             width: 100%;
             padding: 10px 12px;
             background: rgba(255, 255, 255, 0.04) url("data:image/svg+xml;utf8,<svg fill='%23ffffff' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 12px center;
             background-size: 16px;
-            border: 1px solid var(--border);
+            border: 2px solid #dc2626;
             border-radius: 10px;
             color: #fff;
             font-size: 0.85rem;
@@ -575,13 +586,12 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            animation: arrowBlink 1.5s infinite ease-in-out;
+            animation: redBlinkBorder 1.5s infinite ease-in-out;
         }
 
         .duration-select:hover, .duration-select:focus {
-            border-color: var(--accent);
-            background-color: rgba(220, 38, 38, 0.05);
-            animation: none;
+            border-color: #ff1a1a;
+            background-color: rgba(220, 38, 38, 0.08);
         }
 
         .duration-select option {
@@ -1378,18 +1388,18 @@
                 badge: "Tarifs Fixes",
                 features: ["Arrangement si plusieurs amendes", "Traitement rapide", "Expertise 10 ans"],
                 services: [
-                    { name: "Amende 35 €", price: "10 €", info: "Traitement de vos amendes à 35€." },
-                    { name: "45€ et 1 point (pas de perte de points)", price: "40€", info: "Procédure spécifique pour éviter la perte de points." },
-                    { name: "45€ sans perte de points", price: "20€", info: "Traitement rapide de l'amende." },
-                    { name: "90€ et 1 point", price: "60€", info: "Gestion d'amende forfaitaire de 90€." },
-                    { name: "90€ et 2 points", price: "80€", info: "Gestion d'amende forfaitaire de 90€." },
-                    { name: "90€ et 3 points", price: "100€", info: "Gestion d'amende forfaitaire de 90€." },
-                    { name: "90€ et 4 points", price: "120€", info: "Gestion d'amende forfaitaire de 90€." },
-                    { name: "90€ et 6 points", price: "150€", info: "Gestion d'amende forfaitaire de 90€." },
-                    { name: "135€ sans perte de points", price: "50€", info: "Traitement d'amende de 135€." },
-                    { name: "135€ et 3 points (arrangement si plusieurs amendes)", price: "100€", info: "Possibilité d'arrangement pour plusieurs amendes groupées." },
-                    { name: "Amende Forfaitaire Majorée (375€)", price: "150€", info: "Traitement de l'amende majorée." },
-                    { name: "Amende 200€", price: "100€", info: "Prise en charge d'amende de 200€." }
+                    { name: "Amende initiale de 35 €, 10 € seulement chez nous", price: "10 €", info: "Traitement de vos amendes à 35€." },
+                    { name: "Amende initiale de 45 € (avec 1 point), 40 € seulement chez nous", price: "40 €", info: "Procédure spécifique pour éviter la perte de points." },
+                    { name: "Amende initiale de 45 € (sans perte de points), 20 € seulement chez nous", price: "20 €", info: "Traitement rapide de l'amende." },
+                    { name: "Amende initiale de 90 € (avec 1 point), 60 € seulement chez nous", price: "60 €", info: "Gestion d'amende forfaitaire de 90€." },
+                    { name: "Amende initiale de 90 € (avec 2 points), 80 € seulement chez nous", price: "80 €", info: "Gestion d'amende forfaitaire de 90€." },
+                    { name: "Amende initiale de 90 € (avec 3 points), 100 € seulement chez nous", price: "100 €", info: "Gestion d'amende forfaitaire de 90€." },
+                    { name: "Amende initiale de 90 € (avec 4 points), 120 € seulement chez nous", price: "120 €", info: "Gestion d'amende forfaitaire de 90€." },
+                    { name: "Amende initiale de 90 € (avec 6 points), 150 € seulement chez nous", price: "150 €", info: "Gestion d'amende forfaitaire de 90€." },
+                    { name: "Amende initiale de 135 € (sans perte de points), 50 € seulement chez nous", price: "50 €", info: "Traitement d'amende de 135€." },
+                    { name: "Amende initiale de 135 € (avec 3 points), 100 € seulement chez nous", price: "100 €", info: "Possibilité d'arrangement pour plusieurs amendes groupées." },
+                    { name: "Amende Forfaitaire Majorée initiale de 375 €, 150 € seulement chez nous", price: "150 €", info: "Traitement de l'amende majorée." },
+                    { name: "Amende initiale de 200 €, 100 € seulement chez nous", price: "100 €", info: "Prise en charge d'amende de 200€." }
                 ]
             },
             {
@@ -1551,7 +1561,7 @@
 
             categories.forEach(cat => {
                 let optionsHtml = cat.services.map((srv, idx) => 
-                    `<option value="${idx}">${srv.name} ➔ ${srv.price}</option>`
+                    `<option value="${idx}">${srv.name}</option>`
                 ).join('');
 
                 let featuresHtml = cat.features.map(f => 
