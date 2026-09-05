@@ -554,10 +554,15 @@
             display: block;
         }
 
+        @keyframes arrowBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
         .duration-select {
             width: 100%;
             padding: 10px 12px;
-            background: rgba(255, 255, 255, 0.04) url("data:image/svg+xml;utf8,<svg fill='%23ffffff' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 10px center;
+            background: rgba(255, 255, 255, 0.04) url("data:image/svg+xml;utf8,<svg fill='%23ffffff' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 12px center;
             background-size: 16px;
             border: 1px solid var(--border);
             border-radius: 10px;
@@ -570,11 +575,13 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
+            animation: arrowBlink 1.5s infinite ease-in-out;
         }
 
         .duration-select:hover, .duration-select:focus {
             border-color: var(--accent);
             background-color: rgba(220, 38, 38, 0.05);
+            animation: none;
         }
 
         .duration-select option {
@@ -1013,6 +1020,41 @@
 
         .copy-notification.show { transform: translateX(-50%) translateY(0); }
 
+        /* --- SCROLL TO TOP / BOTTOM BUTTONS --- */
+        .page-scroll-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 2500;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .scroll-btn {
+            width: 45px;
+            height: 45px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: var(--transition);
+            backdrop-filter: blur(8px);
+            font-size: 1rem;
+        }
+
+        .scroll-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(220, 38, 38, 0.4);
+        }
+
         /* --- FOOTER --- */
         footer {
             background: rgba(5, 5, 7, 0.95);
@@ -1036,6 +1078,8 @@
             .hero-buttons { flex-direction: column; width: 100%; }
             .btn-primary, .btn-secondary { width: 100%; }
             .compatibility-card { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .page-scroll-buttons { bottom: 20px; right: 20px; }
+            .scroll-btn { width: 40px; height: 40px; font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -1051,6 +1095,12 @@
     <div class="glow-bg"></div>
 
     <div class="copy-notification" id="copyNotification">📋 Message copié ! Colle-le sur Snapchat.</div>
+
+    <!-- BOUTONS FLOTTANTS HAUT / BAS -->
+    <div class="page-scroll-buttons">
+        <button class="scroll-btn" onclick="scrollToTop()" title="Remonter en haut"><i class="fa-solid fa-arrow-up"></i></button>
+        <button class="scroll-btn" onclick="scrollToBottom()" title="Aller tout en bas"><i class="fa-solid fa-arrow-down"></i></button>
+    </div>
 
     <header>
         <div class="announcement-bar">⚖️ EXPERTISES ADMINISTRATIVES & SERVICES OFFICIELS DEPUIS 10 ANS ⚖️</div>
@@ -1079,6 +1129,7 @@
         </div>
     </div>
 
+    <!-- MODAL DÉTAILS DU SERVICE & BOUTON COMMANDE SNAPCHAT -->
     <div class="modal-overlay" id="serviceDetailModal">
         <div class="contact-modal" style="text-align: left;">
             <div style="font-size: 0.72rem; color: #ef4444; font-weight: 800; text-transform: uppercase; margin-bottom: 5px;" id="modalCatName">Catégorie</div>
@@ -1097,6 +1148,7 @@
         </div>
     </div>
 
+    <!-- POP-UP DE COMMANDE DIRECTE -->
     <div class="modal-overlay" id="orderPopupModal">
         <div class="contact-modal" style="text-align: center;">
             <div style="width: 50px; height: 50px; background: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; color: #dc2626; font-size: 1.3rem;">
@@ -1349,7 +1401,11 @@
                 badge: "Essentiel",
                 features: ["Discrétion absolue", "Conforme et sécurisé", "Validation express"],
                 services: [
-                    { name: "Certificat d'hospitalisation (retard chez soi, rentrée de nuit avec bracelet)", price: "100€", info: "Justificatif officiel d'hospitalisation pour couvrir vos retards ou obligations (bracelet de nuit)." }
+                    { 
+                        name: "Certificat d'hospitalisation", 
+                        price: "100€", 
+                        info: "<strong>CERTIFICAT D'HOSPITALISATION</strong><br><br>Attestation officielle d'hospitalisation pour couvrir vos retards ou obligations (ex: rentrée de nuit avec bracelet).<br><br><strong>Tarif :</strong> 100€" 
+                    }
                 ]
             },
             {
@@ -1568,7 +1624,6 @@
             document.getElementById('serviceDetailModal').classList.remove('open');
         }
 
-        // --- GESTION DU POP-UP DE COMMANDE ---
         let currentOrderText = "";
 
         function openOrderPopup(catId) {
@@ -1581,7 +1636,6 @@
             document.getElementById('popupOrderSummary').innerText = `${cat.name} : ${selectedService.name} (${selectedService.price})`;
             document.getElementById('orderPopupModal').classList.add('open');
 
-            // Configurer le bouton de validation du pop-up
             const confirmBtn = document.getElementById('confirmOrderSnapBtn');
             confirmBtn.onclick = function() {
                 closeOrderPopup();
@@ -1633,6 +1687,21 @@
         function toggleFaq(element) {
             const item = element.parentElement;
             item.classList.toggle('active');
+        }
+
+        /* --- FONCTIONS POUR LES FLÈCHES HAUT / BAS --- */
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: 'smooth'
+            });
         }
 
         const track = document.getElementById('reviewsTrack');
