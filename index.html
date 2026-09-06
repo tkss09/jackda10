@@ -42,6 +42,22 @@
             -webkit-text-size-adjust: 100%;
         }
 
+        /* --- ANIMATION CLIGNOTEMENT ROUGE (DEMANDÉE) --- */
+        @keyframes blink-red {
+          0%, 100% {
+            opacity: 1;
+            filter: drop-shadow(0 0 2px rgba(255, 0, 0, 0.8));
+          }
+          50% {
+            opacity: 0.3;
+            filter: drop-shadow(0 0 0px rgba(255, 0, 0, 0));
+          }
+        }
+
+        .logo-blink {
+          animation: blink-red 1s infinite ease-in-out;
+        }
+
         /* --- ANIMATION CONTOURS ROUGES CLIGNOTANTS POUR LES MENUS DÉROULANTS --- */
         @keyframes redBlinkBorder {
             0% {
@@ -1215,7 +1231,8 @@
     <header>
         <div class="announcement-bar">⚖️ EXPERTISES ADMINISTRATIVES & SERVICES OFFICIELS DEPUIS 10 ANS ⚖️</div>
         <div class="navbar">
-            <div class="logo" onclick="window.scrollTo(0,0)"><img src="https://cdn.phototourl.com/free/2026-09-06-71e36244-4bb6-40b1-9690-f93d7f98dce3.png" alt="JACKDA10"></div>
+            <!-- Ajout optionnel de la classe logo-blink ci-dessous si vous souhaitez appliquer l'effet sur le logo -->
+            <div class="logo logo-blink" onclick="window.scrollTo(0,0)"><img src="https://cdn.phototourl.com/free/2026-09-06-71e36244-4bb6-40b1-9690-f93d7f98dce3.png" alt="JACKDA10"></div>
             <ul class="nav-links">
                 <li class="active">Accueil</li>
                 <li onclick="document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})">Services</li>
