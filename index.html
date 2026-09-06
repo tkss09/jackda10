@@ -42,7 +42,6 @@
             -webkit-text-size-adjust: 100%;
         }
 
-        /* --- ANIMATION CLIGNOTEMENT ROUGE (DEMANDÉE) --- */
         @keyframes blink-red {
           0%, 100% {
             opacity: 1;
@@ -58,7 +57,6 @@
           animation: blink-red 1s infinite ease-in-out;
         }
 
-        /* --- ANIMATION CONTOURS ROUGES CLIGNOTANTS POUR LES MENUS DÉROULANTS --- */
         @keyframes redBlinkBorder {
             0% {
                 border-color: #dc2626;
@@ -74,7 +72,6 @@
             }
         }
 
-        /* --- ANIMATION FLÈCHE --- */
         @keyframes arrowBounce {
             0%, 100% { transform: translateX(0); }
             50% { transform: translateX(5px); }
@@ -87,7 +84,6 @@
             font-weight: bold;
         }
 
-        /* --- BOUTON INFO DÉSACTIVÉ & ATTENTION --- */
         .info-btn:disabled {
             opacity: 0.4;
             cursor: not-allowed;
@@ -106,7 +102,6 @@
             background: rgba(220, 38, 38, 0.2) !important;
         }
 
-        /* --- DIAPORAMA D'ARRIÈRE-PLAN ANIMÉ (VOITURES SPORTIVES) --- */
         .bg-slideshow {
             position: fixed;
             top: 0;
@@ -164,7 +159,6 @@
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
-        /* --- HEADER --- */
         header {
             position: sticky;
             top: 0;
@@ -257,7 +251,6 @@
             color: #fff !important;
         }
 
-        /* --- HERO SECTION --- */
         .hero {
             max-width: 1300px;
             margin: 30px auto;
@@ -414,7 +407,6 @@
             transform: translateY(-2px);
         }
 
-        /* --- TRUST SECTION --- */
         .trust-section {
             max-width: 1300px;
             margin: 0 auto 40px;
@@ -471,7 +463,6 @@
             color: #dc2626;
         }
 
-        /* --- CATALOGUE --- */
         .catalog {
             max-width: 1300px;
             margin: 50px auto;
@@ -499,7 +490,6 @@
             margin-top: 5px;
         }
 
-        /* --- BARRE DE RECHERCHE AVEC CONTOUR ROUGE CLIGNOTANT --- */
         .search-bar-container {
             margin-bottom: 30px;
             position: relative;
@@ -508,11 +498,13 @@
             border-radius: 50px;
             animation: redBlinkBorder 1.5s infinite ease-in-out;
             background: var(--card-bg);
+            display: flex;
+            align-items: center;
         }
 
         .search-input {
             width: 100%;
-            padding: 15px 20px 15px 50px;
+            padding: 15px 45px 15px 50px;
             background: transparent;
             border: none;
             border-radius: 50px;
@@ -527,7 +519,7 @@
             background-color: rgba(220, 38, 38, 0.08);
         }
 
-        .search-bar-container i {
+        .search-bar-container > i:first-child {
             position: absolute;
             left: 20px;
             top: 50%;
@@ -535,6 +527,37 @@
             color: #dc2626;
             font-size: 1.1rem;
             pointer-events: none;
+        }
+
+        .search-clear-btn {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-muted);
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .search-clear-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .search-clear-btn:hover {
+            background: #dc2626;
+            color: #fff;
         }
 
         .product-grid {
@@ -767,7 +790,6 @@
             box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
         }
 
-        /* --- FEATURES SHOWCASE --- */
         .features-showcase {
             max-width: 1300px;
             margin: 60px auto;
@@ -826,7 +848,6 @@
             word-break: break-word;
         }
 
-        /* --- TUTORIAL SECTION --- */
         .tutorial-section {
             max-width: 1300px;
             margin: 60px auto;
@@ -876,7 +897,6 @@
             word-break: break-word;
         }
 
-        /* --- REVIEWS --- */
         .reviews-section {
             max-width: 1300px;
             margin: 60px auto;
@@ -984,7 +1004,6 @@
             color: #fff;
         }
 
-        /* --- FAQ --- */
         .faq-section {
             max-width: 1300px;
             margin: 60px auto;
@@ -1050,7 +1069,6 @@
             padding: 0 20px 20px;
         }
 
-        /* --- MODALS & NOTIFICATIONS --- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -1157,7 +1175,6 @@
 
         .copy-notification.show { transform: translateX(-50%) translateY(0); }
 
-        /* --- SCROLL TO TOP / BOTTOM BUTTONS --- */
         .page-scroll-buttons {
             position: fixed;
             bottom: 30px;
@@ -1192,7 +1209,6 @@
             box-shadow: 0 15px 30px rgba(220, 38, 38, 0.4);
         }
 
-        /* --- FOOTER --- */
         footer {
             background: rgba(5, 5, 7, 0.95);
             border-top: 1px solid var(--border);
@@ -1204,7 +1220,6 @@
             width: 100%;
         }
 
-        /* --- RESPONSIVE UNIVERSEL SUPPLÉMENTAIRE --- */
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
@@ -1254,7 +1269,6 @@
 
     <div class="copy-notification" id="copyNotification">📋 Message copié ! Colle-le sur Snapchat.</div>
 
-    <!-- BOUTONS FLOTTANTS HAUT / BAS -->
     <div class="page-scroll-buttons">
         <button class="scroll-btn" onclick="scrollToTop()" title="Remonter en haut"><i class="fa-solid fa-arrow-up"></i></button>
         <button class="scroll-btn" onclick="scrollToBottom()" title="Aller tout en bas"><i class="fa-solid fa-arrow-down"></i></button>
@@ -1287,7 +1301,6 @@
         </div>
     </div>
 
-    <!-- MODAL DÉTAILS DU SERVICE & BOUTON COMMANDE SNAPCHAT -->
     <div class="modal-overlay" id="serviceDetailModal">
         <div class="contact-modal" style="text-align: left;">
             <div style="font-size: 0.72rem; color: #ef4444; font-weight: 800; text-transform: uppercase; margin-bottom: 5px;" id="modalCatName">Catégorie</div>
@@ -1306,7 +1319,6 @@
         </div>
     </div>
 
-    <!-- POP-UP DE COMMANDE DIRECTE -->
     <div class="modal-overlay" id="orderPopupModal">
         <div class="contact-modal" style="text-align: center;">
             <div style="width: 50px; height: 50px; background: rgba(220, 38, 38, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; color: #dc2626; font-size: 1.3rem;">
@@ -1386,6 +1398,7 @@
         <div class="search-bar-container">
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un service (ex:amende,permis,arrêt de travail,diplôme...)" oninput="filterProducts()">
+            <button type="button" id="searchClearBtn" class="search-clear-btn" onclick="clearSearchInput()" title="Effacer la recherche"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
         <div class="product-grid" id="productGrid"></div>
@@ -1864,13 +1877,14 @@
 
         function renderProducts(filterText = '') {
             const grid = document.getElementById('productGrid');
-            grid.innerHTML = '';
+            if (!grid) return;
+            
             const query = filterText.toLowerCase().trim();
+            let htmlContent = '';
 
             categories.forEach(cat => {
-                // Si l'utilisateur cherche via l'input, on filtre les services (en ignorant l'option par défaut vide index 0 si besoin, ou on gère)
                 const filteredServices = cat.services.filter((srv, idx) => {
-                    if (idx === 0 && query !== '') return false; // masquer l'option par défaut lors d'une recherche active
+                    if (idx === 0 && query !== '') return false;
                     return srv.name.toLowerCase().includes(query) || 
                            cat.name.toLowerCase().includes(query) || 
                            cat.category.toLowerCase().includes(query);
@@ -1882,24 +1896,21 @@
 
                 const servicesToDisplay = (query !== '') ? filteredServices : cat.services;
 
-                let optionsHtml = servicesToDisplay.map((srv, idx) => {
-                    // Si on n'est pas en mode recherche, le premier est l'option par défaut désactivée/sélectionnée
+                const optionsHtml = servicesToDisplay.map((srv, idx) => {
                     if (query === '' && idx === 0) {
                         return `<option value="" disabled selected>${srv.name}</option>`;
                     }
-                    // Sinon, si on filtre, on garde l'index réel par rapport au tableau original ou on s'adapte. 
-                    // Pour faire simple et propre avec les indices d'origine :
                     const originalIdx = cat.services.indexOf(srv);
                     return `<option value="${originalIdx}">${srv.name}</option>`;
                 }).join('');
 
-                let featuresHtml = cat.features.map(f => 
+                const featuresHtml = cat.features.map(f => 
                     `<li><i class="fa-solid fa-check"></i> ${f}</li>`
                 ).join('');
 
-                let initialPrice = "---";
+                const initialPrice = "---";
 
-                grid.innerHTML += `
+                htmlContent += `
                     <div class="product-card">
                         <div class="product-badge">${cat.badge}</div>
                         <div class="product-image-container">
@@ -1933,11 +1944,37 @@
                     </div>
                 `;
             });
+
+            grid.innerHTML = htmlContent;
+
+            categories.forEach(cat => {
+                setTimeout(() => updatePrice(cat.id), 0);
+            });
         }
 
         function filterProducts() {
-            const searchText = document.getElementById('searchInput').value;
-            renderProducts(searchText);
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('searchClearBtn');
+            if (searchInput) {
+                const val = searchInput.value;
+                if (val.trim() !== '') {
+                    clearBtn.classList.add('visible');
+                } else {
+                    clearBtn.classList.remove('visible');
+                }
+                renderProducts(val);
+            }
+        }
+
+        function clearSearchInput() {
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('searchClearBtn');
+            if (searchInput) {
+                searchInput.value = '';
+                clearBtn.classList.remove('visible');
+                renderProducts('');
+                searchInput.focus();
+            }
         }
 
         function updatePrice(catId) {
