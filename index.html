@@ -183,7 +183,7 @@
         }
 
         .logo img {
-            height: 60px; /* Agrandissement du logo SVG (passé de 35px à 60px) */
+            height: 60px;
             width: auto;
             vertical-align: middle;
             display: inline-block;
@@ -1231,7 +1231,6 @@
     <header>
         <div class="announcement-bar">⚖️ EXPERTISES ADMINISTRATIVES & SERVICES OFFICIELS DEPUIS 10 ANS ⚖️</div>
         <div class="navbar">
-            <!-- Ajout optionnel de la classe logo-blink ci-dessous si vous souhaitez appliquer l'effet sur le logo -->
             <div class="logo logo-blink" onclick="window.scrollTo(0,0)"><img src="https://cdn.phototourl.com/free/2026-09-06-71e36244-4bb6-40b1-9690-f93d7f98dce3.png" alt="JACKDA10"></div>
             <ul class="nav-links">
                 <li class="active">Accueil</li>
@@ -1352,7 +1351,6 @@
             </div>
         </div>
 
-        <!-- BARRE DE RECHERCHE AVEC CONTOUR ROUGE CLIGNOTANT -->
         <div class="search-bar-container">
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un service (ex: amende, permis, arrêt de travail, diplôme...)" oninput="filterProducts()">
@@ -1589,18 +1587,66 @@
                 badge: "Tarifs Fixes",
                 features: ["Arrangement si plusieurs amendes", "Traitement rapide", "Expertise 10 ans"],
                 services: [
-                    { name: "Amende initiale de 35 € ➔ 10 € chez nous", price: "10 €", info: "Traitement de vos amendes à 35€." },
-                    { name: "Amende initiale de 45 € (avec 1 point) ➔ 40 € chez nous", price: "40 €", info: "Procédure spécifique pour éviter la perte de points." },
-                    { name: "Amende initiale de 45 € (sans perte de points) ➔ 20 € chez nous", price: "20 €", info: "Traitement rapide de l'amende." },
-                    { name: "Amende initiale de 90 € (avec 1 point) ➔ 60 € chez nous", price: "60 €", info: "Gestion d'amende forfaitaire de 90€." },
-                    { name: "Amende initiale de 90 € (avec 2 points) ➔ 80 € chez nous", price: "80 €", info: "Gestion d'amende forfaitaire de 90€." },
-                    { name: "Amende initiale de 90 € (avec 3 points) ➔ 100 € chez nous", price: "100 €", info: "Gestion d'amende forfaitaire de 90€." },
-                    { name: "Amende initiale de 90 € (avec 4 points) ➔ 120 € chez nous", price: "120 €", info: "Gestion d'amende forfaitaire de 90€." },
-                    { name: "Amende initiale de 90 € (avec 6 points) ➔ 150 € chez nous", price: "150 €", info: "Gestion d'amende forfaitaire de 90€." },
-                    { name: "Amende initiale de 135 € (sans perte de points) ➔ 50 € chez nous", price: "50 €", info: "Traitement d'amende de 135€." },
-                    { name: "Amende initiale de 135 € (avec 3 points) ➔ 100 € chez nous", price: "100 €", info: "Possibilité d'arrangement pour plusieurs amendes groupées." },
-                    { name: "Amende Forfaitaire Majorée initiale de 375 € ➔ 150 € chez nous", price: "150 €", info: "Traitement de l'amende majorée." },
-                    { name: "Amende initiale de 180 € ➔ 100 € chez nous", price: "100 €", info: "Prise en charge d'amende de 180€." }
+                    { 
+                        name: "Amende initiale de 35 € ➔ 10 € chez nous", 
+                        price: "10 €", 
+                        info: "Au lieu de payer votre amende à 35 €, vous la payez 10 € chez nous." 
+                    },
+                    { 
+                        name: "Amende initiale de 45 € (avec 1 point) ➔ 40 € chez nous", 
+                        price: "40 €", 
+                        info: "Au lieu de payer 45 € et de perdre 1 point sur votre permis, vous payez 40 € chez nous et vous ne perdez pas votre point." 
+                    },
+                    { 
+                        name: "Amende initiale de 45 € (sans perte de points) ➔ 20 € chez nous", 
+                        price: "20 €", 
+                        info: "Au lieu de payer votre amende à 45 €, vous payez 20 € chez nous sans aucune perte de points." 
+                    },
+                    { 
+                        name: "Amende initiale de 90 € (avec 1 point) ➔ 60 € chez nous", 
+                        price: "60 €", 
+                        info: "Au lieu de régler 90 € et de perdre 1 point, vous payez 60 € chez nous et vous conservez votre point." 
+                    },
+                    { 
+                        name: "Amende initiale de 90 € avec 2 points ➔ 80 € chez nous", 
+                        price: "80 €", 
+                        info: "Au lieu de payer les 90 € et de perdre 2 points sur votre permis, vous payez 80 € chez nous et vous ne perdez pas vos 2 points." 
+                    },
+                    { 
+                        name: "Amende initiale de 90 € (avec 3 points) ➔ 100 € chez nous", 
+                        price: "100 €", 
+                        info: "Au lieu de débourser 90 € et d'écoper d'un retrait de 3 points, vous payez 100 € chez nous pour éviter la perte des 3 points." 
+                    },
+                    { 
+                        name: "Amende initiale de 90 € (avec 4 points) ➔ 120 € chez nous", 
+                        price: "120 €", 
+                        info: "Au lieu de payer 90 € et de perdre 4 points, vous payez 120 € chez nous pour protéger l'intégralité de vos points." 
+                    },
+                    { 
+                        name: "Amende initiale de 90 € (avec 6 points) ➔ 150 € chez nous", 
+                        price: "150 €", 
+                        info: "Au lieu de payer 90 € et de perdre lourdement 6 points, vous payez 150 € chez nous et vous ne perdez aucun point." 
+                    },
+                    { 
+                        name: "Amende initiale de 135 € (sans perte de points) ➔ 50 € chez nous", 
+                        price: "50 €", 
+                        info: "Au lieu de régler l'amende initiale de 135 €, vous ne payez que 50 € chez nous, sans perte de points." 
+                    },
+                    { 
+                        name: "Amende initiale de 135 € (avec 3 points) ➔ 100 € chez nous", 
+                        price: "100 €", 
+                        info: "Au lieu de payer 135 € et de perdre 3 points, vous payez 100 € chez nous et vous évitez le retrait de points." 
+                    },
+                    { 
+                        name: "Amende Forfaitaire Majorée initiale de 375 € ➔ 150 € chez nous", 
+                        price: "150 €", 
+                        info: "Au lieu de payer votre amende majorée à 375 €, vous la réglez à seulement 150 € chez nous." 
+                    },
+                    { 
+                        name: "Amende initiale de 180 € ➔ 100 € chez nous", 
+                        price: "100 €", 
+                        info: "Au lieu de payer votre amende initiale de 180 €, vous la payez 100 € chez nous." 
+                    }
                 ]
             },
             {
@@ -1943,7 +1989,6 @@
             item.classList.toggle('active');
         }
 
-        /* --- FONCTIONS POUR LES FLÈCHES HAUT / BAS --- */
         function scrollToTop() {
             window.scrollTo({
                 top: 0,
