@@ -440,6 +440,41 @@
             margin-top: 5px;
         }
 
+        /* --- BARRE DE RECHERCHE --- */
+        .search-bar-container {
+            margin-bottom: 30px;
+            position: relative;
+            max-width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: #dc2626;
+            box-shadow: 0 0 15px rgba(220, 38, 38, 0.2);
+        }
+
+        .search-bar-container i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            pointer-events: none;
+        }
+
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -1239,6 +1274,13 @@
                 <p class="section-subtitle">Sélectionnez la catégorie et le service adapté à votre situation</p>
             </div>
         </div>
+
+        <!-- BARRE DE RECHERCHE AJOUTÉE ICI -->
+        <div class="search-bar-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un service (ex: amende, permis, arrêt de travail, diplôme...)" oninput="filterProducts()">
+        </div>
+
         <div class="product-grid" id="productGrid"></div>
     </section>
 
@@ -1637,12 +1679,29 @@
             }
         ];
 
-        function renderProducts() {
+        function renderProducts(filterText = '') {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
 
+            const query = filterText.toLowerCase().trim();
+
             categories.forEach(cat => {
-                let optionsHtml = cat.services.map((srv, idx) => 
+                // Filtrer les services de la catégorie en fonction de la recherche
+                const filteredServices = cat.services.filter(srv => 
+                    srv.name.toLowerCase().includes(query) || 
+                    cat.name.toLowerCase().includes(query) ||
+                    cat.category.toLowerCase().includes(query)
+                );
+
+                // Si aucun service ne correspond dans cette catégorie et qu'il y a du texte de recherche, on masque la carte
+                if (query !== '' && filteredServices.length === 0) {
+                    return;
+                }
+
+                // Utiliser les services filtrés ou tous les services par défaut
+                const servicesToDisplay = (query !== '') ? filteredServices : cat.services;
+
+                let optionsHtml = servicesToDisplay.map((srv, idx) => 
                     `<option value="${idx}">${srv.name}</option>`
                 ).join('');
 
@@ -1650,7 +1709,7 @@
                     `<li><i class="fa-solid fa-check"></i> ${f}</li>`
                 ).join('');
 
-                let initialPrice = cat.services[0].price;
+                let initialPrice = servicesToDisplay.length > 0 ? servicesToDisplay[0].price : cat.services[0].price;
 
                 grid.innerHTML += `
                     <div class="product-card">
@@ -1686,17 +1745,40 @@
             });
         }
 
+        function filterProducts() {
+            const searchText = document.getElementById('searchInput').value;
+            renderProducts(searchText);
+        }
+
         function updatePrice(catId) {
             const cat = categories.find(c => c.id === catId);
             const select = document.getElementById(`select-${catId}`);
             const priceEl = document.getElementById(`price-${catId}`);
-            priceEl.innerText = cat.services[select.value].price;
+            const searchText = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            const filteredServices = searchText !== '' ? cat.services.filter(srv => 
+                srv.name.toLowerCase().includes(searchText) || 
+                cat.name.toLowerCase().includes(searchText) ||
+                cat.category.toLowerCase().includes(searchText)
+            ) : cat.services;
+
+            if(filteredServices[select.value]) {
+                priceEl.innerText = filteredServices[select.value].price;
+            }
         }
 
         function openServiceDetailModal(catId) {
             const cat = categories.find(c => c.id === catId);
             const select = document.getElementById(`select-${catId}`);
-            const selectedService = cat.services[select.value];
+            const searchText = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            const filteredServices = searchText !== '' ? cat.services.filter(srv => 
+                srv.name.toLowerCase().includes(searchText) || 
+                cat.name.toLowerCase().includes(searchText) ||
+                cat.category.toLowerCase().includes(searchText)
+            ) : cat.services;
+
+            const selectedService = filteredServices[select.value] || cat.services[0];
 
             document.getElementById('modalCatName').innerText = cat.category;
             document.getElementById('modalServiceName').innerText = selectedService.name;
@@ -1721,7 +1803,15 @@
         function openOrderPopup(catId) {
             const cat = categories.find(c => c.id === catId);
             const select = document.getElementById(`select-${catId}`);
-            const selectedService = cat.services[select.value];
+            const searchText = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            const filteredServices = searchText !== '' ? cat.services.filter(srv => 
+                srv.name.toLowerCase().includes(searchText) || 
+                cat.name.toLowerCase().includes(searchText) ||
+                cat.category.toLowerCase().includes(searchText)
+            ) : cat.services;
+
+            const selectedService = filteredServices[select.value] || cat.services[0];
 
             currentOrderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• ${cat.name} ➔ ${selectedService.name} (${selectedService.price})`;
             
@@ -1849,7 +1939,7 @@
 
         setInterval(nextSlide, 6000);
 
-        window.onload = renderProducts;
+        window.onload = () => renderProducts();
     </script>
 </body>
 </html>
