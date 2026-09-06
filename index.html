@@ -132,7 +132,7 @@
             background: linear-gradient(90deg, #b91c1c, #dc2626);
             color: #ffffff;
             text-align: center;
-            font-size: 0.75rem;
+            font-size: clamp(0.65rem, 1.5vw, 0.75rem);
             padding: 8px 15px;
             font-weight: 800;
             letter-spacing: 0.5px;
@@ -146,6 +146,7 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
+            gap: 15px;
         }
 
         @keyframes logoGlowAnimation {
@@ -155,13 +156,14 @@
         }
 
         .logo {
-            font-size: 1.3rem;
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
             font-weight: 800;
             letter-spacing: -0.5px;
             cursor: pointer;
             position: relative;
             display: inline-block;
             animation: logoGlowAnimation 3s infinite ease-in-out;
+            white-space: nowrap;
         }
 
         .logo span {
@@ -172,10 +174,12 @@
 
         .nav-links {
             display: flex;
-            gap: 20px;
+            gap: clamp(10px, 2vw, 20px);
             font-weight: 500;
-            font-size: 0.85rem;
+            font-size: clamp(0.75rem, 1.2vw, 0.85rem);
             align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
         .nav-links li {
@@ -217,13 +221,13 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-radius: 24px;
-            padding: 40px 25px;
+            padding: clamp(25px, 4vw, 40px) clamp(15px, 3vw, 25px);
             border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
             box-shadow: 0 25px 50px rgba(0,0,0,0.5);
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
             align-items: center;
         }
@@ -239,6 +243,7 @@
             filter: blur(90px);
             border-radius: 50%;
             z-index: 0;
+            pointer-events: none;
         }
 
         .hero-content {
@@ -247,7 +252,7 @@
         }
 
         .hero-banner h1 {
-            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-size: clamp(1.8rem, 4vw, 3.2rem);
             font-weight: 800;
             line-height: 1.15;
             margin-bottom: 15px;
@@ -259,7 +264,7 @@
         }
 
         .hero-banner p {
-            font-size: clamp(0.95rem, 2vw, 1.1rem);
+            font-size: clamp(0.9rem, 1.8vw, 1.1rem);
             color: var(--text-muted);
             margin-bottom: 25px;
         }
@@ -281,6 +286,7 @@
             position: relative;
             z-index: 1;
             backdrop-filter: blur(8px);
+            width: 100%;
         }
 
         .stat-item {
@@ -328,6 +334,8 @@
             box-shadow: 0 10px 20px var(--accent-glow);
             display: inline-block;
             text-align: center;
+            flex: 1;
+            min-width: 140px;
         }
 
         .btn-primary:hover {
@@ -347,6 +355,8 @@
             transition: var(--transition);
             display: inline-block;
             text-align: center;
+            flex: 1;
+            min-width: 140px;
         }
 
         .btn-secondary:hover {
@@ -361,7 +371,7 @@
             margin: 0 auto 40px;
             padding: 0 15px;
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 15px;
         }
 
@@ -429,7 +439,7 @@
         }
 
         .section-title {
-            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-size: clamp(1.4rem, 3vw, 2.2rem);
             font-weight: 800;
             letter-spacing: -0.5px;
         }
@@ -494,6 +504,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            height: 100%;
         }
 
         .product-card:hover {
@@ -507,6 +518,7 @@
             background: #111;
             position: relative;
             overflow: hidden;
+            width: 100%;
         }
 
         .product-image-container img {
@@ -567,6 +579,7 @@
             font-size: 1.2rem;
             font-weight: 700;
             margin-bottom: 10px;
+            word-break: break-word;
         }
 
         .product-desc {
@@ -574,6 +587,7 @@
             color: var(--text-muted);
             margin-bottom: 15px;
             line-height: 1.5;
+            word-break: break-word;
         }
 
         .features-list {
@@ -589,11 +603,13 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            word-break: break-word;
         }
 
         .features-list li i {
             color: #dc2626;
             font-size: 0.75rem;
+            flex-shrink: 0;
         }
 
         .select-group {
@@ -610,7 +626,7 @@
 
         .duration-select {
             width: 100%;
-            min-width: 100%;
+            max-width: 100%;
             padding: 12px 15px;
             background: rgba(255, 255, 255, 0.04) url("data:image/svg+xml;utf8,<svg fill='%23ffffff' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 12px center;
             background-size: 16px;
@@ -626,6 +642,7 @@
             -moz-appearance: none;
             appearance: none;
             animation: redBlinkBorder 1.5s infinite ease-in-out;
+            text-overflow: ellipsis;
         }
 
         .duration-select:hover, .duration-select:focus {
@@ -656,11 +673,13 @@
             font-size: 1.1rem;
             font-weight: 800;
             color: #ef4444;
+            word-break: break-word;
         }
 
         .btn-action-group {
             display: flex;
             gap: 6px;
+            flex-wrap: wrap;
         }
 
         .info-btn {
@@ -721,6 +740,7 @@
             display: flex;
             flex-direction: column;
             transition: var(--transition);
+            height: 100%;
         }
 
         .showcase-card:hover {
@@ -740,18 +760,21 @@
             border-radius: 12px;
             border: 1px solid rgba(220, 38, 38, 0.2);
             color: #dc2626;
+            flex-shrink: 0;
         }
 
         .showcase-card h3 {
             font-size: 1.1rem;
             font-weight: 700;
             margin-bottom: 8px;
+            word-break: break-word;
         }
 
         .showcase-card p {
             color: var(--text-muted);
             font-size: 0.85rem;
             line-height: 1.5;
+            word-break: break-word;
         }
 
         /* --- TUTORIAL SECTION --- */
@@ -775,6 +798,7 @@
             backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
+            height: 100%;
         }
 
         .step-number {
@@ -794,11 +818,13 @@
             font-size: 1.1rem;
             margin-bottom: 8px;
             font-weight: 700;
+            word-break: break-word;
         }
 
         .tutorial-card p {
             font-size: 0.85rem;
             color: var(--text-muted);
+            word-break: break-word;
         }
 
         /* --- REVIEWS --- */
@@ -872,12 +898,14 @@
             color: #e2e8f0;
             margin-bottom: 15px;
             font-style: italic;
+            word-break: break-word;
         }
 
         .review-author {
             font-size: 0.8rem;
             font-weight: 700;
             color: var(--text-muted);
+            word-break: break-word;
         }
 
         .carousel-nav-btns {
@@ -939,6 +967,8 @@
             justify-content: space-between;
             align-items: center;
             transition: var(--transition);
+            gap: 10px;
+            word-break: break-word;
         }
 
         .faq-question:hover {
@@ -948,6 +978,7 @@
         .faq-question i {
             transition: transform 0.3s ease;
             color: #dc2626;
+            flex-shrink: 0;
         }
 
         .faq-item.active .faq-question i {
@@ -962,6 +993,7 @@
             color: var(--text-muted);
             transition: all 0.3s ease;
             line-height: 1.6;
+            word-break: break-word;
         }
 
         .faq-item.active .faq-answer {
@@ -1011,6 +1043,7 @@
             font-size: 1.25rem;
             font-weight: 800;
             margin-bottom: 10px;
+            word-break: break-word;
         }
 
         .contact-modal p {
@@ -1018,6 +1051,7 @@
             color: var(--text-muted);
             margin-bottom: 20px;
             line-height: 1.5;
+            word-break: break-word;
         }
 
         .social-buttons {
@@ -1039,6 +1073,7 @@
             border: none;
             cursor: pointer;
             text-decoration: none;
+            word-break: break-word;
         }
 
         .snapchat-btn { background: #fffc00; color: #000; }
@@ -1120,19 +1155,40 @@
             width: 100%;
         }
 
-        @media (max-width: 900px) {
-            .hero-banner { grid-template-columns: 1fr; padding: 30px 20px; }
-            .trust-section { grid-template-columns: 1fr; }
-        }
-
+        /* --- RESPONSIVE UNIVERSEL SUPPLÉMENTAIRE --- */
         @media (max-width: 768px) {
-            .navbar { padding: 12px 15px; flex-direction: column; gap: 12px; }
-            .nav-links { gap: 12px; font-size: 0.8rem; flex-wrap: wrap; justify-content: center; width: 100%; }
-            .hero-buttons { flex-direction: column; width: 100%; }
-            .btn-primary, .btn-secondary { width: 100%; }
-            .compatibility-card { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .page-scroll-buttons { bottom: 20px; right: 20px; }
-            .scroll-btn { width: 40px; height: 40px; font-size: 0.9rem; }
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 15px;
+            }
+
+            .nav-links {
+                justify-content: center;
+                width: 100%;
+                gap: 10px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+            }
+
+            .page-scroll-buttons {
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .scroll-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -1187,8 +1243,8 @@
         <div class="contact-modal" style="text-align: left;">
             <div style="font-size: 0.72rem; color: #ef4444; font-weight: 800; text-transform: uppercase; margin-bottom: 5px;" id="modalCatName">Catégorie</div>
             <h3 id="modalServiceName" style="margin-bottom: 12px; font-size: 1.3rem;">Nom du Service</h3>
-            <p id="modalServiceDesc" style="margin-bottom: 20px; color: var(--text-muted); line-height: 1.6;">Description détaillée du service sélectionné.</p>
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <p id="modalServiceDesc" style="margin-bottom: 20px; color: var(--text-muted); line-height: 1.6; word-break: break-word;">Description détaillée du service sélectionné.</p>
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                 <span style="font-size: 0.85rem; font-weight: 700;">Tarif de la prestation :</span>
                 <span id="modalServicePrice" style="font-size: 1.2rem; font-weight: 800; color: #ef4444;">0€</span>
             </div>
@@ -1208,7 +1264,7 @@
                 <i class="fa-solid fa-cart-shopping"></i>
             </div>
             <h3 style="margin-bottom: 8px;">Récapitulatif de Commande</h3>
-            <p id="popupOrderSummary" style="font-size: 0.9rem; color: #fff; font-weight: 600; margin-bottom: 15px; background: rgba(255,255,255,0.04); padding: 12px; border-radius: 10px; border: 1px solid var(--border);">Service sélectionné</p>
+            <p id="popupOrderSummary" style="font-size: 0.9rem; color: #fff; font-weight: 600; margin-bottom: 15px; background: rgba(255,255,255,0.04); padding: 12px; border-radius: 10px; border: 1px solid var(--border); word-break: break-word;">Service sélectionné</p>
             <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px;">En cliquant ci-dessous, le message sera copié et vous serez redirigé vers notre Snapchat pour valider votre commande.</p>
             <div class="social-buttons">
                 <button class="social-btn snapchat-btn" id="confirmOrderSnapBtn" style="padding: 14px; font-weight: 800;">
@@ -1368,7 +1424,6 @@
 
         <div class="reviews-carousel-wrapper">
             <div class="reviews-track" id="reviewsTrack">
-                <!-- 15 Nouveaux Avis Intégrés -->
                 <div class="review-card">
                     <div>
                         <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
@@ -1689,19 +1744,16 @@
             const query = filterText.toLowerCase().trim();
 
             categories.forEach(cat => {
-                // Filtrer les services de la catégorie en fonction de la recherche
                 const filteredServices = cat.services.filter(srv => 
                     srv.name.toLowerCase().includes(query) || 
                     cat.name.toLowerCase().includes(query) ||
                     cat.category.toLowerCase().includes(query)
                 );
 
-                // Si aucun service ne correspond dans cette catégorie et qu'il y a du texte de recherche, on masque la carte
                 if (query !== '' && filteredServices.length === 0) {
                     return;
                 }
 
-                // Utiliser les services filtrés ou tous les services par défaut
                 const servicesToDisplay = (query !== '') ? filteredServices : cat.services;
 
                 let optionsHtml = servicesToDisplay.map((srv, idx) => 
