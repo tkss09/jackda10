@@ -74,6 +74,38 @@
             }
         }
 
+        /* --- ANIMATION FLÈCHE --- */
+        @keyframes arrowBounce {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
+
+        .info-arrow-animated {
+            display: inline-block;
+            animation: arrowBounce 0.8s infinite ease-in-out;
+            margin-left: 4px;
+            font-weight: bold;
+        }
+
+        /* --- BOUTON INFO DÉSACTIVÉ & ATTENTION --- */
+        .info-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+            box-shadow: none;
+        }
+
+        @keyframes infoBounceAttention {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .info-btn-attention {
+            animation: infoBounceAttention 0.8s infinite ease-in-out;
+            border-color: #dc2626 !important;
+            background: rgba(220, 38, 38, 0.2) !important;
+        }
+
         /* --- DIAPORAMA D'ARRIÈRE-PLAN ANIMÉ (VOITURES SPORTIVES) --- */
         .bg-slideshow {
             position: fixed;
@@ -1353,7 +1385,7 @@
 
         <div class="search-bar-container">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un service (ex:amende,permis, arrêt de travail, diplôme...)" oninput="filterProducts()">
+            <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un service (ex:amende,permis,arrêt de travail,diplôme...)" oninput="filterProducts()">
         </div>
 
         <div class="product-grid" id="productGrid"></div>
@@ -1588,6 +1620,11 @@
                 features: ["Arrangement si plusieurs amendes", "Traitement rapide", "Expertise 10 ans"],
                 services: [
                     { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
+                    { 
                         name: "Amende initiale de 35 € ➔ 10 € chez nous", 
                         price: "10 €", 
                         info: "Au lieu de payer votre amende à 35 €, vous la payez 10 € chez nous." 
@@ -1659,6 +1696,11 @@
                 features: ["Discrétion absolue", "Conforme et sécurisé", "Validation express"],
                 services: [
                     { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
+                    { 
                         name: "Certificat d'hospitalisation", 
                         price: "100€", 
                         info: "<strong>CERTIFICAT D'HOSPITALISATION</strong><br><br>Attestation officielle d'hospitalisation pour couvrir vos retards ou obligations (ex: rentrée de nuit avec bracelet).<br><br><strong>Tarif :</strong> 100€" 
@@ -1675,6 +1717,11 @@
                 features: ["Pour ceux qui on pas d'assurance chantier", "Seulement pour présenter au client", "Pas déclarer"],
                 services: [
                     { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
+                    { 
                         name: "Attestation Décennale", 
                         price: "100€", 
                         info: "<strong>ATTESTATION DÉCENNALE</strong><br><br><em>(POUR CEUX QUI ON A PAS D'ASSURANCE CHANTIER SEULEMENT POUR PRÉSENTER AU CLIENT PAS DÉCLARER)</em><br><br><strong>Documents et informations à fournir :</strong><br>• Raison sociale : **********<br>• Adresse : **********\n• Code postal / Ville : **********\n• Téléphone : **********\n• N° Siret : **********\n• Email : **********\n• Activités garanties : ********** (Exemple : Charpente et structure en bois, couverture ...)" 
@@ -1690,6 +1737,11 @@
                 badge: "Sur Devis",
                 features: ["Suivi personnalisé", "Traitement rapide", "Expertise 10 ans"],
                 services: [
+                    { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
                     { 
                         name: "Permis B (sans déplacement)", 
                         price: "Sur Devis (Sous Conditions)", 
@@ -1743,6 +1795,11 @@
                 badge: "Sur Devis",
                 features: ["Protocoles sécurisés", "Discrétion garantie", "réduction selon le nombre de documents", "Conseils experts"],
                 services: [
+                    { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
                     { name: "Prise de Sang Alcool Négatif", price: "150€", info: "Accompagnement pour les protocoles de prise de sang." },
                     { 
                         name: "Test Urinaire / Stupéfiant", 
@@ -1761,6 +1818,11 @@
                 badge: "Populaire",
                 features: ["Support global", "Conformité des pièces", "Accompagnement de A à Z"],
                 services: [
+                    { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
                     { 
                         name: "Création auto-entreprise", 
                         price: "Sur Devis", 
@@ -1803,15 +1865,16 @@
         function renderProducts(filterText = '') {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
-
             const query = filterText.toLowerCase().trim();
 
             categories.forEach(cat => {
-                const filteredServices = cat.services.filter(srv => 
-                    srv.name.toLowerCase().includes(query) || 
-                    cat.name.toLowerCase().includes(query) ||
-                    cat.category.toLowerCase().includes(query)
-                );
+                // Si l'utilisateur cherche via l'input, on filtre les services (en ignorant l'option par défaut vide index 0 si besoin, ou on gère)
+                const filteredServices = cat.services.filter((srv, idx) => {
+                    if (idx === 0 && query !== '') return false; // masquer l'option par défaut lors d'une recherche active
+                    return srv.name.toLowerCase().includes(query) || 
+                           cat.name.toLowerCase().includes(query) || 
+                           cat.category.toLowerCase().includes(query);
+                });
 
                 if (query !== '' && filteredServices.length === 0) {
                     return;
@@ -1819,15 +1882,22 @@
 
                 const servicesToDisplay = (query !== '') ? filteredServices : cat.services;
 
-                let optionsHtml = servicesToDisplay.map((srv, idx) => 
-                    `<option value="${idx}">${srv.name}</option>`
-                ).join('');
+                let optionsHtml = servicesToDisplay.map((srv, idx) => {
+                    // Si on n'est pas en mode recherche, le premier est l'option par défaut désactivée/sélectionnée
+                    if (query === '' && idx === 0) {
+                        return `<option value="" disabled selected>${srv.name}</option>`;
+                    }
+                    // Sinon, si on filtre, on garde l'index réel par rapport au tableau original ou on s'adapte. 
+                    // Pour faire simple et propre avec les indices d'origine :
+                    const originalIdx = cat.services.indexOf(srv);
+                    return `<option value="${originalIdx}">${srv.name}</option>`;
+                }).join('');
 
                 let featuresHtml = cat.features.map(f => 
                     `<li><i class="fa-solid fa-check"></i> ${f}</li>`
                 ).join('');
 
-                let initialPrice = servicesToDisplay.length > 0 ? servicesToDisplay[0].price : cat.services[0].price;
+                let initialPrice = "---";
 
                 grid.innerHTML += `
                     <div class="product-card">
@@ -1853,7 +1923,9 @@
                             <div class="product-footer">
                                 <div class="price-tag" id="price-${cat.id}">${initialPrice}</div>
                                 <div class="btn-action-group">
-                                    <button class="info-btn" onclick="openServiceDetailModal('${cat.id}')"><i class="fa-solid fa-circle-info"></i> Info</button>
+                                    <button class="info-btn info-btn-attention" id="info-btn-${cat.id}" onclick="openServiceDetailModal('${cat.id}')" disabled>
+                                        <i class="fa-solid fa-circle-info"></i> Info <span class="info-arrow-animated">➔</span>
+                                    </button>
                                     <button class="add-cart-btn" onclick="openOrderPopup('${cat.id}')">Commander</button>
                                 </div>
                             </div>
@@ -1869,34 +1941,36 @@
         }
 
         function updatePrice(catId) {
-            const cat = categories.find(c => c.id === catId);
-            const select = document.getElementById(`select-${catId}`);
-            const priceEl = document.getElementById(`price-${catId}`);
-            const searchText = document.getElementById('searchInput').value.toLowerCase().trim();
-            
-            const filteredServices = searchText !== '' ? cat.services.filter(srv => 
-                srv.name.toLowerCase().includes(searchText) || 
-                cat.name.toLowerCase().includes(searchText) ||
-                cat.category.toLowerCase().includes(searchText)
-            ) : cat.services;
+            const selectElement = document.getElementById(`select-${catId}`);
+            const priceTag = document.getElementById(`price-${catId}`);
+            const infoBtn = document.getElementById(`info-btn-${catId}`);
+            const selectedValue = selectElement.value;
 
-            if(filteredServices[select.value]) {
-                priceEl.innerText = filteredServices[select.value].price;
+            const cat = categories.find(c => c.id === catId);
+
+            if (selectedValue === "" || selectedValue === null) {
+                priceTag.innerText = "---";
+                infoBtn.disabled = true;
+                infoBtn.classList.add('info-btn-attention');
+            } else {
+                const serviceIndex = parseInt(selectedValue);
+                const selectedService = cat.services[serviceIndex];
+                
+                priceTag.innerText = selectedService.price;
+                infoBtn.disabled = false;
+                infoBtn.classList.remove('info-btn-attention');
             }
         }
 
         function openServiceDetailModal(catId) {
             const cat = categories.find(c => c.id === catId);
             const select = document.getElementById(`select-${catId}`);
-            const searchText = document.getElementById('searchInput').value.toLowerCase().trim();
-            
-            const filteredServices = searchText !== '' ? cat.services.filter(srv => 
-                srv.name.toLowerCase().includes(searchText) || 
-                cat.name.toLowerCase().includes(searchText) ||
-                cat.category.toLowerCase().includes(searchText)
-            ) : cat.services;
+            const selectedValue = select.value;
 
-            const selectedService = filteredServices[select.value] || cat.services[0];
+            if (selectedValue === "" || selectedValue === null) return;
+
+            const serviceIndex = parseInt(selectedValue);
+            const selectedService = cat.services[serviceIndex];
 
             document.getElementById('modalCatName').innerText = cat.category;
             document.getElementById('modalServiceName').innerText = selectedService.name;
@@ -1921,15 +1995,15 @@
         function openOrderPopup(catId) {
             const cat = categories.find(c => c.id === catId);
             const select = document.getElementById(`select-${catId}`);
-            const searchText = document.getElementById('searchInput').value.toLowerCase().trim();
-            
-            const filteredServices = searchText !== '' ? cat.services.filter(srv => 
-                srv.name.toLowerCase().includes(searchText) || 
-                cat.name.toLowerCase().includes(searchText) ||
-                cat.category.toLowerCase().includes(searchText)
-            ) : cat.services;
+            const selectedValue = select.value;
 
-            const selectedService = filteredServices[select.value] || cat.services[0];
+            if (selectedValue === "" || selectedValue === null) {
+                alert("Veuillez d'abord sélectionner un service dans la liste déroulante.");
+                return;
+            }
+
+            const serviceIndex = parseInt(selectedValue);
+            const selectedService = cat.services[serviceIndex];
 
             currentOrderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• ${cat.name} ➔ ${selectedService.name} (${selectedService.price})`;
             
