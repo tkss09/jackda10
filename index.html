@@ -2590,23 +2590,40 @@
         background: linear-gradient(135deg, #dc2626, #ef4444);
     }
 
-    /* Fenêtre de discussion positionnée à gauche */
+    /* Fenêtre de discussion positionnée à gauche (Desktop par défaut) */
+#chatbot-window {
+    position: absolute;
+    bottom: 75px;
+    left: 0; /* Aligné à gauche par rapport au bouton */
+    width: 350px;
+    max-width: 90vw;
+    height: 480px;
+    background: #121218;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: chatSlideIn 0.3s ease forwards;
+}
+
+/* Adaptation pour les téléphones (écrans de 480px de large ou moins) */
+@media screen and (max-width: 480px) {
     #chatbot-window {
-        position: absolute;
-        bottom: 75px;
-        left: 0; /* Aligné à gauche par rapport au bouton */
-        width: 350px;
-        max-width: 90vw;
-        height: 480px;
-        background: #121218;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
-        display: none;
-        flex-direction: column;
-        overflow: hidden;
-        animation: chatSlideIn 0.3s ease forwards;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        max-width: 100%;
+        height: 85vh; /* Occupe une grande partie de la hauteur de l'écran mobile */
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-left: none;
+        border-right: none;
     }
+}
 
     @keyframes chatSlideIn {
         from { opacity: 0; transform: translateY(15px); }
@@ -2832,8 +2849,8 @@
             response: "Spécialiste depuis 10 ans dans l'accompagnement des dossiers de permis, annulation, code et tests psychotechniques. Nous vous offrons une assistance discrète et sécurisée."
         },
         {
-            keywords: ["booking", "hôtel", "vacances", "partir", "billet", "reservation", "réservation", "reductions", "réduction", "-50", "moins cher"],
-            response: "Tu veux voyager sans te ruiner ? On te propose jusqu'à -50% de réduction sur tes réservations d'hôtels et tes billets de vol. Dis-nous ta destination sur Snapchat !"
+            keywords: ["booking", "hôtel", "hotel", "vacances", "partir", "billet", "reservation", "réservation", "reductions", "réduction", "-50", "moins cher"],
+            response: "Tu veux voyager sans te ruiner ? On te propose jusqu'à -50% de réduction sur tes réservations d'hôtels Dis-nous ta destination sur Snapchat !"
         },
         {
             keywords: ["contact", "joindre", "parler", "humain", "personne", "telephone", "téléphone", "discuter", "aide", "sos", "admin", "createur", "soutenir", "repondre", "répondre", "bot", "robot"],
