@@ -102,6 +102,44 @@
             background: rgba(220, 38, 38, 0.2) !important;
         }
 
+        @keyframes navbarGlowLine {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #dc2626, #ff4d4d, #dc2626, transparent);
+            background-size: 200% 100%;
+            animation: navbarGlowLine 3s infinite linear;
+            z-index: 10;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #dc2626, #ff4d4d, #dc2626, transparent);
+            background-size: 200% 100%;
+            animation: navbarGlowLine 3s infinite linear;
+            z-index: 10;
+        }
+
         .bg-slideshow {
             position: fixed;
             top: 0;
@@ -577,6 +615,23 @@
             flex-direction: column;
             position: relative;
             height: 100%;
+            cursor: pointer;
+        }
+
+        .product-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(90deg, transparent, #dc2626, #ff4d4d, #dc2626, transparent);
+            background-size: 300% 300%;
+            animation: navbarGlowLine 4s infinite linear;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: 10;
         }
 
         .product-card:hover {
@@ -1211,6 +1266,7 @@
         }
 
         footer {
+            position: relative;
             background: rgba(5, 5, 7, 0.95);
             border-top: 1px solid var(--border);
             padding: 40px 15px 20px;
@@ -1278,12 +1334,12 @@
     <header>
         <div class="announcement-bar">⚖️ EXPERTISES ADMINISTRATIVES & SERVICES OFFICIELS DEPUIS 10 ANS ⚖️</div>
         <div class="navbar">
-            <div class="logo logo-blink" onclick="window.scrollTo(0,0)"><img src="https://cdn.phototourl.com/free/2026-09-06-71e36244-4bb6-40b1-9690-f93d7f98dce3.png" alt="JACKDA10"></div>
+            <div class="logo logo-blink" onclick="showMainPage()"><img src="https://cdn.phototourl.com/free/2026-09-06-71e36244-4bb6-40b1-9690-f93d7f98dce3.png" alt="JACKDA10"></div>
             <ul class="nav-links">
-                <li class="active">Accueil</li>
-                <li onclick="document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})">Services</li>
-                <li onclick="document.getElementById('tutorial-section').scrollIntoView({behavior: 'smooth'})">Démarches</li>
-                <li onclick="document.getElementById('faq-section').scrollIntoView({behavior: 'smooth'})">FAQ</li>
+                <li class="active" onclick="showMainPage()">Accueil</li>
+                <li onclick="showMainPage(); document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})">Services</li>
+                <li onclick="showMainPage(); document.getElementById('tutorial-section').scrollIntoView({behavior: 'smooth'})">Démarches</li>
+                <li onclick="showMainPage(); document.getElementById('faq-section').scrollIntoView({behavior: 'smooth'})">FAQ</li>
                 <li><span class="nav-trial-btn" onclick="openTrialModal()">📋 Consultation</span></li>
             </ul>
         </div>
@@ -1337,284 +1393,402 @@
         </div>
     </div>
 
-    <section class="hero">
-        <div class="hero-banner">
-            <div class="hero-content">
-                <h1>Solutions Administratives & <span>Permis sur Mesure</span></h1>
-                <p>Spécialiste depuis 10 ans dans la gestion de dossiers complexes : annulation de permis, rattrapage de points, amendes, certificats et titres officiels.</p>
-                <div class="hero-buttons">
-                    <button class="btn-primary" onclick="document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})">Voir nos prestations</button>
-                    <button class="btn-secondary" onclick="openTrialModal()">📋 Consultation Gratuite</button>
+    <!-- CONTENEUR PAGE PRINCIPALE -->
+    <div id="mainPageContainer">
+        <section class="hero">
+            <div class="hero-banner">
+                <div class="hero-content">
+                    <h1>Solutions Administratives & <span>Permis sur Mesure</span></h1>
+                    <p>Spécialiste depuis 10 ans dans la gestion de dossiers complexes : annulation de permis, rattrapage de points, amendes, certificats et titres officiels.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})">Voir nos prestations</button>
+                        <button class="btn-secondary" onclick="openTrialModal()">📋 Consultation Gratuite</button>
+                    </div>
+                </div>
+                <div class="hero-stats-card">
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fa-solid fa-award"></i></div>
+                        <div class="stat-text">
+                            <h4>10 Ans d'Expérience</h4>
+                            <p>Une expertise reconnue et sécurisée</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fa-solid fa-user-secret"></i></div>
+                        <div class="stat-text">
+                            <h4>100% Confidentiel</h4>
+                            <p>Discrétion absolue garantie</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fa-solid fa-bolt"></i></div>
+                        <div class="stat-text">
+                            <h4>Réactivité Maximale</h4>
+                            <p>Prise en charge rapide de votre dossier</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="hero-stats-card">
-                <div class="stat-item">
-                    <div class="stat-icon"><i class="fa-solid fa-award"></i></div>
-                    <div class="stat-text">
-                        <h4>10 Ans d'Expérience</h4>
-                        <p>Une expertise reconnue et sécurisée</p>
-                    </div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-icon"><i class="fa-solid fa-user-secret"></i></div>
-                    <div class="stat-text">
-                        <h4>100% Confidentiel</h4>
-                        <p>Discrétion absolue garantie</p>
-                    </div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-icon"><i class="fa-solid fa-bolt"></i></div>
-                    <div class="stat-text">
-                        <h4>Réactivité Maximale</h4>
-                        <p>Prise en charge rapide de votre dossier</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <div class="trust-section">
-        <div class="activation-badge">
-            <i class="fa-solid fa-shield-halved"></i>
-            <div>
-                <strong>Sécurité & Conformité</strong>
-                <div style="font-size: 0.78rem; font-weight: 400; color: var(--text-muted); margin-top: 2px;">Traitement rigoureux et professionnel de vos pièces</div>
+        <div class="trust-section">
+            <div class="activation-badge">
+                <i class="fa-solid fa-shield-halved"></i>
+                <div>
+                    <strong>Sécurité & Conformité</strong>
+                    <div style="font-size: 0.78rem; font-weight: 400; color: var(--text-muted); margin-top: 2px;">Traitement rigoureux et professionnel de vos pièces</div>
+                </div>
+            </div>
+            <div class="compatibility-card">
+                <div class="compatibility-item"><i class="fa-solid fa-car-rear"></i><span>Permis & Route</span></div>
+                <div class="compatibility-item"><i class="fa-solid fa-file-shield"></i><span>Dossiers & Amendes</span></div>
+                <div class="compatibility-item"><i class="fa-solid fa-graduation-cap"></i><span>Diplômes & Certificats</span></div>
             </div>
         </div>
-        <div class="compatibility-card">
-            <div class="compatibility-item"><i class="fa-solid fa-car-rear"></i><span>Permis & Route</span></div>
-            <div class="compatibility-item"><i class="fa-solid fa-file-shield"></i><span>Dossiers & Amendes</span></div>
-            <div class="compatibility-item"><i class="fa-solid fa-graduation-cap"></i><span>Diplômes & Certificats</span></div>
-        </div>
+
+        <section class="catalog" id="catalog-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Nos Prestations & Services</h2>
+                    <p class="section-subtitle">Sélectionnez la catégorie pour ouvrir sa page dédiée avec tous les détails</p>
+                </div>
+            </div>
+
+            <div class="search-bar-container">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un service (ex:amende,permis,arrêt de travail,diplôme...)" oninput="filterProducts()">
+                <button type="button" id="searchClearBtn" class="search-clear-btn" onclick="clearSearchInput()" title="Effacer la recherche"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="product-grid" id="productGrid"></div>
+        </section>
+
+        <section class="features-showcase">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Domaines d'Expertise</h2>
+                    <p class="section-subtitle">Une prise en charge globale pour toutes vos contraintes administratives</p>
+                </div>
+            </div>
+            <div class="showcase-grid">
+                <div class="showcase-card">
+                    <div class="showcase-icon"><i class="fa-solid fa-car"></i></div>
+                    <h3>Rattrapage & Permis</h3>
+                    <p>Gestion des dossiers d'annulation, code de la route, tests psychotechniques et permis ou 125cc.</p>
+                </div>
+                <div class="showcase-card">
+                    <div class="showcase-icon"><i class="fa-solid fa-file-shield"></i></div>
+                    <h3>Gestion des Amendes</h3>
+                    <p>Grille tarifaire claire et adaptée pour le traitement de vos amendes et forfaits majorés.</p>
+                </div>
+                <div class="showcase-card">
+                    <div class="showcase-icon"><i class="fa-solid fa-file-medical"></i></div>
+                    <h3>Certificats & Justificatifs</h3>
+                    <p>Délivrance de certificats d'hospitalisation et justificatifs pour aménagement d'horaires et bracelet.</p>
+                </div>
+                <div class="showcase-card">
+                    <div class="showcase-icon"><i class="fa-solid fa-folder-open"></i></div>
+                    <h3>Dossiers & Logement</h3>
+                    <p>Appui rigoureux pour vos justificatifs, dossiers de logement, arrêts de travail et contestations.</p>
+                </div>
+                <div class="showcase-card">
+                    <div class="showcase-icon"><i class="fa-solid fa-hospital"></i></div>
+                    <h3>Tests & Examens Médicaux</h3>
+                    <p>Accompagnement pour contrôles techniques, prises de sang, tests urinaires et protocoles.</p>
+                </div>
+                <div class="showcase-card">
+                    <div class="showcase-icon"><i class="fa-solid fa-certificate"></i></div>
+                    <h3>Diplômes & Formations</h3>
+                    <p>Certifications officielles, cartes professionnelles et documents administratifs spécifiques.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="tutorial-section" id="tutorial-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Comment ça marche ?</h2>
+                    <p class="section-subtitle">Un traitement de dossier en 3 étapes simples</p>
+                </div>
+            </div>
+            <div class="tutorial-grid">
+                <div class="tutorial-card">
+                    <span class="step-number">Étape 01</span>
+                    <h3>Exposez votre situation</h3>
+                    <p>Contactez-nous via Snapchat pour nous faire part de votre problématique (permis, amende, examen, etc.).</p>
+                </div>
+                <div class="tutorial-card">
+                    <span class="step-number">Étape 02</span>
+                    <h3>Étude du dossier</h3>
+                    <p>Notre équipe analyse vos pièces justificatives et valide la faisabilité de votre accompagnement en moins de 24h.</p>
+                </div>
+                <div class="tutorial-card">
+                    <span class="step-number">Étape 03</span>
+                    <h3>Résolution & Suivi</h3>
+                    <p>Finalisation de la démarche administrative ou obtention de vos documents officiels en toute sérénité.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="reviews-section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Témoignages de nos clients</h2>
+                    <p class="section-subtitle">Faites glisser de gauche à droite ou utilisez les flèches pour découvrir les avis</p>
+                </div>
+                <div class="carousel-nav-btns">
+                    <button class="carousel-btn" onclick="scrollReviews(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="carousel-btn" onclick="scrollReviews(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="reviews-carousel-wrapper">
+                <div class="reviews-track" id="reviewsTrack">
+                    <!-- Avis initiaux -->
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Traitement d'amende record et communication nickel sur Snapchat."</p>
+                        </div>
+                        <div class="review-author">— Karim B. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Problème de logement solutionné rapidement."</p>
+                        </div>
+                        <div class="review-author">— Sarah L. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Service discret, professionnel et de confiance."</p>
+                        </div>
+                        <div class="review-author">— Thomas D. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Attestations et assurances provisoires traitées avec sérieux."</p>
+                        </div>
+                        <div class="review-author">— Mehdi R. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Accompagnement efficace pour le permis et le code."</p>
+                        </div>
+                        <div class="review-author">— Alexandre N. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Très réactif sur Snapchat."</p>
+                        </div>
+                        <div class="review-author">— Laura C. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Certificat pour le travail obtenu en moins de 24h."</p>
+                        </div>
+                        <div class="review-author">— David G. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Grande maîtrise des procédures administratives complexes."</p>
+                        </div>
+                        <div class="review-author">— Nassim H. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Dossier d'auto-entreprise parfaitement géré."</p>
+                        </div>
+                        <div class="review-author">— Chloé M. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Service client impeccable et à l'écoute."</p>
+                        </div>
+                        <div class="review-author">— Jordan P. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Traitement rapide des amendes majorées."</p>
+                        </div>
+                        <div class="review-author">— Lucas B. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Aide irréprochable pour des tests médicaux."</p>
+                        </div>
+                        <div class="review-author">— Camille T. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Attestation décennale conforme et rapide."</p>
+                        </div>
+                        <div class="review-author">— Yassine K. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Suivi rigoureux et vrai sens du service."</p>
+                        </div>
+                        <div class="review-author">— Mélanie F. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Problèmes administratifs réglés en quelques jours avec efficacité."</p>
+                        </div>
+                        <div class="review-author">— Kevin W. (Client vérifié)</div>
+                    </div>
+                    <!-- 15 avis supplémentaires ajoutés -->
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Incroyable réduction sur mon voyage vol + hôtel, merci !"</p>
+                        </div>
+                        <div class="review-author">— Sofiane M. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Réservation validée sans accroc, économies au top."</p>
+                        </div>
+                        <div class="review-author">— Inès V. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Top service, très professionnel pour toutes mes démarches."</p>
+                        </div>
+                        <div class="review-author">— Enzo R. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Efficace et rapide, je recommande les yeux fermés."</p>
+                        </div>
+                        <div class="review-author">— Manon S. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Super pour économiser sur les vacances !"</p>
+                        </div>
+                        <div class="review-author">— Rayan E. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Personne de confiance, réactive sur les réseaux."</p>
+                        </div>
+                        <div class="review-author">— Pauline D. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"J'ai pu partir en vacances grâce aux -50%, merci JACKDA10 !"</p>
+                        </div>
+                        <div class="review-author">— Bilal K. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Parfait, rien à redire, communication fluide."</p>
+                        </div>
+                        <div class="review-author">— Clara J. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Un vrai gain de temps et d'argent."</p>
+                        </div>
+                        <div class="review-author">— Nathan G. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Service client ultra carré, bravo."</p>
+                        </div>
+                        <div class="review-author">— Sarah M. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Réductions appliquées immédiatement sans problème."</p>
+                        </div>
+                        <div class="review-author">— Hugo P. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Au top pour les voyages et les démarches."</p>
+                        </div>
+                        <div class="review-author">— Maëva L. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Très satisfaite de la prestation, merci encore !"</p>
+                        </div>
+                        <div class="review-author">— Océane B. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Toujours présent pour répondre aux questions."</p>
+                        </div>
+                        <div class="review-author">— Alexis T. (Client vérifié)</div>
+                    </div>
+                    <div class="review-card">
+                        <div>
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="review-text">"Le meilleur dans son domaine, confiant à 100%."</p>
+                        </div>
+                        <div class="review-author">— Samy C. (Client vérifié)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section" id="faq-section">
+            <div class="section-header" style="text-align: center; display: block;">
+                <h2 class="section-title">Foire Aux Questions (FAQ)</h2>
+                <p class="section-subtitle">Les réponses à vos interrogations administratives</p>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">Comment prendre contact pour mon dossier ? <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer">Vous pouvez nous joindre directement via Snapchat en cliquant sur les boutons de commande ou de consultation pour un échange 100% confidentiel.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">Quels sont les délais de traitement ? <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer">Les premières analyses de dossiers sont effectuées en moins de 24h. Chaque cas bénéficie d'un suivi personnalisé selon sa complexité.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">Mes données personnelles sont-elles protégées ? <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer">Absolument. Forts de nos 10 années d'expérience, nous garantissons la stricte confidentialité de l'ensemble des documents et informations transmis.</div>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <section class="catalog" id="catalog-section">
-        <div class="section-header">
-            <div>
-                <h2 class="section-title">Nos Prestations & Services</h2>
-                <p class="section-subtitle">Sélectionnez la catégorie et le service adapté à votre situation</p>
-            </div>
-        </div>
-
-        <div class="search-bar-container">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un service (ex:amende,permis,arrêt de travail,diplôme...)" oninput="filterProducts()">
-            <button type="button" id="searchClearBtn" class="search-clear-btn" onclick="clearSearchInput()" title="Effacer la recherche"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-
-        <div class="product-grid" id="productGrid"></div>
-    </section>
-
-    <section class="features-showcase">
-        <div class="section-header">
-            <div>
-                <h2 class="section-title">Domaines d'Expertise</h2>
-                <p class="section-subtitle">Une prise en charge globale pour toutes vos contraintes administratives</p>
-            </div>
-        </div>
-        <div class="showcase-grid">
-            <div class="showcase-card">
-                <div class="showcase-icon"><i class="fa-solid fa-car"></i></div>
-                <h3>Rattrapage & Permis</h3>
-                <p>Gestion des dossiers d'annulation, code de la route, tests psychotechniques et permis ou 125cc.</p>
-            </div>
-            <div class="showcase-card">
-                <div class="showcase-icon"><i class="fa-solid fa-file-shield"></i></div>
-                <h3>Gestion des Amendes</h3>
-                <p>Grille tarifaire claire et adaptée pour le traitement de vos amendes et forfaits majorés.</p>
-            </div>
-            <div class="showcase-card">
-                <div class="showcase-icon"><i class="fa-solid fa-file-medical"></i></div>
-                <h3>Certificats & Justificatifs</h3>
-                <p>Délivrance de certificats d'hospitalisation et justificatifs pour aménagement d'horaires et bracelet.</p>
-            </div>
-            <div class="showcase-card">
-                <div class="showcase-icon"><i class="fa-solid fa-folder-open"></i></div>
-                <h3>Dossiers & Logement</h3>
-                <p>Appui rigoureux pour vos justificatifs, dossiers de logement, arrêts de travail et contestations.</p>
-            </div>
-            <div class="showcase-card">
-                <div class="showcase-icon"><i class="fa-solid fa-hospital"></i></div>
-                <h3>Tests & Examens Médicaux</h3>
-                <p>Accompagnement pour contrôles techniques, prises de sang, tests urinaires et protocoles.</p>
-            </div>
-            <div class="showcase-card">
-                <div class="showcase-icon"><i class="fa-solid fa-certificate"></i></div>
-                <h3>Diplômes & Formations</h3>
-                <p>Certifications officielles, cartes professionnelles et documents administratifs spécifiques.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="tutorial-section" id="tutorial-section">
-        <div class="section-header">
-            <div>
-                <h2 class="section-title">Comment ça marche ?</h2>
-                <p class="section-subtitle">Un traitement de dossier en 3 étapes simples</p>
-            </div>
-        </div>
-        <div class="tutorial-grid">
-            <div class="tutorial-card">
-                <span class="step-number">Étape 01</span>
-                <h3>Exposez votre situation</h3>
-                <p>Contactez-nous via Snapchat pour nous faire part de votre problématique (permis, amende, examen, etc.).</p>
-            </div>
-            <div class="tutorial-card">
-                <span class="step-number">Étape 02</span>
-                <h3>Étude du dossier</h3>
-                <p>Notre équipe analyse vos pièces justificatives et valide la faisabilité de votre accompagnement en moins de 24h.</p>
-            </div>
-            <div class="tutorial-card">
-                <span class="step-number">Étape 03</span>
-                <h3>Résolution & Suivi</h3>
-                <p>Finalisation de la démarche administrative ou obtention de vos documents officiels en toute sérénité.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="reviews-section">
-        <div class="section-header">
-            <div>
-                <h2 class="section-title">Témoignages de nos clients</h2>
-                <p class="section-subtitle">Faites glisser de gauche à droite ou utilisez les flèches pour découvrir les avis</p>
-            </div>
-            <div class="carousel-nav-btns">
-                <button class="carousel-btn" onclick="scrollReviews(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-                <button class="carousel-btn" onclick="scrollReviews(1)"><i class="fa-solid fa-chevron-right"></i></button>
-            </div>
-        </div>
-
-        <div class="reviews-carousel-wrapper">
-            <div class="reviews-track" id="reviewsTrack">
-                <div class="review-card">
-                    <div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="review-text">"Traitement d'amende record et communication nickel sur Snapchat."</p>
-                    </div>
-                    <div class="review-author">— Karim B. (Client vérifié)</div>
-                </div>
-                <div class="review-card">
-                    <div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="review-text">"Problème de logement solutionné rapidement."</p>
-                    </div>
-                    <div class="review-author">— Sarah L. (Client vérifié)</div>
-                </div>
-                <div class="review-card">
-                    <div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="review-text">"Service discret, professionnel et de confiance."</p>
-                    </div>
-                    <div class="review-author">— Thomas D. (Client vérifié)</div>
-                </div>
-                <div class="review-card">
-                    <div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="review-text">"Attestations et assurances provisoires traitées avec sérieux."</p>
-                    </div>
-                    <div class="review-author">— Mehdi R. (Client vérifié)</div>
-                </div>
-                <div class="review-card">
-                    <div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="review-text">"Accompagnement efficace pour le permis et le code."</p>
-                    </div>
-                    <div class="review-author">— Alexandre N. (Client vérifié)</div>
-                </div>
-                <div class="review-card">
-                    <div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="review-text">"Très réactif sur Snapchat."</p>
-                    </div>
-                    <div class="review-author">— Laura C. (Client vérifié)</div>
-                </div>
-                <div class="review-card">
-                    <div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="review-text">"Certificat pour le travail obtenu en moins de 24h."</p>
-                    </div>
-                    <div class="review-author">— David G. (Client vérifié)</div>
-                </div>
-                <div class="review-card">
-                    <div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="review-text">"Grande maîtrise des procédures administratives complexes."</p>
-                    </div>
-                    <div class="review-author">— Nassim H. (Client vérifié)</div>
-                </div>
-                <div class="review-card">
-                    <div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="review-text">"Dossier d'auto-entreprise parfaitement géré."</p>
-                    </div>
-                    <div class="review-author">— Chloé M. (Client vérifié)</div>
-                </div>
-                <div class="review-card">
-                    <div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="review-text">"Service client impeccable et à l'écoute."</p>
-                    </div>
-                    <div class="review-author">— Jordan P. (Client vérifié)</div>
-                </div>
-                <div class="review-card">
-                    <div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="review-text">"Traitement rapide des amendes majorées."</p>
-                    </div>
-                    <div class="review-author">— Lucas B. (Client vérifié)</div>
-                </div>
-                <div class="review-card">
-                    <div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="review-text">"Aide irréprochable pour des tests médicaux."</p>
-                    </div>
-                    <div class="review-author">— Camille T. (Client vérifié)</div>
-                </div>
-                <div class="review-card">
-                    <div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="review-text">"Attestation décennale conforme et rapide."</p>
-                    </div>
-                    <div class="review-author">— Yassine K. (Client vérifié)</div>
-                </div>
-                <div class="review-card">
-                    <div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="review-text">"Suivi rigoureux et vrai sens du service."</p>
-                    </div>
-                    <div class="review-author">— Mélanie F. (Client vérifié)</div>
-                </div>
-                <div class="review-card">
-                    <div>
-                        <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="review-text">"Problèmes administratifs réglés en quelques jours avec efficacité."</p>
-                    </div>
-                    <div class="review-author">— Kevin W. (Client vérifié)</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="faq-section" id="faq-section">
-        <div class="section-header" style="text-align: center; display: block;">
-            <h2 class="section-title">Foire Aux Questions (FAQ)</h2>
-            <p class="section-subtitle">Les réponses à vos interrogations administratives</p>
-        </div>
-        <div class="faq-container">
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Comment prendre contact pour mon dossier ? <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="faq-answer">Vous pouvez nous joindre directement via Snapchat en cliquant sur les boutons de commande ou de consultation pour un échange 100% confidentiel.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Quels sont les délais de traitement ? <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="faq-answer">Les premières analyses de dossiers sont effectuées en moins de 24h. Chaque cas bénéficie d'un suivi personnalisé selon sa complexité.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">Mes données personnelles sont-elles protégées ? <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="faq-answer">Absolument. Forts de nos 10 années d'expérience, nous garantissons la stricte confidentialité de l'ensemble des documents et informations transmis.</div>
-            </div>
-        </div>
-    </section>
+    <!-- CONTENEUR PAGE DE CATEGORIE DÉDIÉE -->
+    <div id="categoryDetailPageContainer" style="display: none; max-width: 1300px; margin: 40px auto; padding: 0 15px;">
+        <button class="btn-secondary" onclick="showMainPage()" style="margin-bottom: 25px; display: inline-flex; align-items: center; gap: 8px; width: auto; min-width: unset;">
+            <i class="fa-solid fa-arrow-left"></i> Retour à l'accueil
+        </button>
+        <div id="categoryDetailContent"></div>
+    </div>
 
     <footer>
         <p>&copy; 2026 JACKDA10. Tous droits réservés. Service d'accompagnement administratif et de gestion de dossiers depuis 10 ans.</p>
@@ -1624,6 +1798,32 @@
         const mySnapchatUrl = "https://www.snapchat.com/@jackda10";
 
         const categories = [
+            {
+                id: "booking",
+                name: "Booking -50%",
+                category: "Voyages & Réservations",
+                desc: "Profitez de réductions exceptionnelles sur vos réservations de vacances vol et hôtel.",
+                img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&auto=format&fit=crop&q=80",
+                badge: "Offre Spéciale",
+                features: ["Économies garanties", "Réservation rapide", "Réservez dès maintenant !"],
+                services: [
+                    { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
+                    { 
+                        name: "Vol + Hôtel (plus de 1000 €)", 
+                        price: "Sur Devis", 
+                        info: "<strong>Vol + Hôtel (plus de 1000 €) :</strong> -50 % de réduction ! Réservez dès maintenant !" 
+                    },
+                    { 
+                        name: "Hôtel + Vol (moins de 1000 €)", 
+                        price: "Sur Devis", 
+                        info: "<strong>Hôtel + Vol (moins de 1000 €) :</strong> -40 % de réduction ! Réservez dès maintenant !" 
+                    }
+                ]
+            },
             {
                 id: "amendes",
                 name: "Amendes & Procédures",
@@ -1911,7 +2111,7 @@
                 const initialPrice = "---";
 
                 htmlContent += `
-                    <div class="product-card">
+                    <div class="product-card" onclick="openCategoryPage('${cat.id}')">
                         <div class="product-badge">${cat.badge}</div>
                         <div class="product-image-container">
                             <img src="${cat.img}" alt="${cat.name}">
@@ -1924,14 +2124,14 @@
                                 <ul class="features-list">
                                     ${featuresHtml}
                                 </ul>
-                                <div class="select-group">
+                                <div class="select-group" onclick="event.stopPropagation()">
                                     <label>Sélectionnez votre service :</label>
                                     <select class="duration-select" id="select-${cat.id}" onchange="updatePrice('${cat.id}')">
                                         ${optionsHtml}
                                     </select>
                                 </div>
                             </div>
-                            <div class="product-footer">
+                            <div class="product-footer" onclick="event.stopPropagation()">
                                 <div class="price-tag" id="price-${cat.id}">${initialPrice}</div>
                                 <div class="btn-action-group">
                                     <button class="info-btn info-btn-attention" id="info-btn-${cat.id}" onclick="openServiceDetailModal('${cat.id}')" disabled>
@@ -1950,6 +2150,79 @@
             categories.forEach(cat => {
                 setTimeout(() => updatePrice(cat.id), 0);
             });
+        }
+
+        function openCategoryPage(catId) {
+            const cat = categories.find(c => c.id === catId);
+            if (!cat) return;
+
+            document.getElementById('mainPageContainer').style.display = 'none';
+            const detailContainer = document.getElementById('categoryDetailPageContainer');
+            const detailContent = document.getElementById('categoryDetailContent');
+
+            let servicesListHtml = '';
+            cat.services.forEach((srv, idx) => {
+                if (idx === 0) return; // Ignore le placeholder "Sélectionner un service"
+                servicesListHtml += `
+                    <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; backdrop-filter: blur(10px);">
+                        <div style="flex: 1; min-width: 250px;">
+                            <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; color: #fff;">${srv.name}</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; word-break: break-word;">${srv.info}</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span style="font-size: 1.15rem; font-weight: 800; color: #ef4444; white-space: nowrap;">${srv.price}</span>
+                            <button class="add-cart-btn" onclick="openOrderPopupDirect('${cat.id}', ${idx})">Commander</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const featuresListHtml = cat.features.map(f => `<li><i class="fa-solid fa-check" style="color: #dc2626;"></i> ${f}</li>`).join('');
+
+            detailContent.innerHTML = `
+                <div style="background: linear-gradient(145deg, rgba(18, 18, 24, 0.95), rgba(10, 10, 15, 0.8)); border: 1px solid var(--border); border-radius: 24px; padding: clamp(20px, 4vw, 40px); margin-bottom: 30px; backdrop-filter: blur(12px);">
+                    <div style="display: flex; gap: 30px; flex-wrap: wrap; align-items: center;">
+                        <div style="flex: 1; min-width: 280px;">
+                            <div style="font-size: 0.75rem; color: #ef4444; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">${cat.category}</div>
+                            <h1 style="font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 12px; line-height: 1.2;">${cat.name}</h1>
+                            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">${cat.desc}</p>
+                            <ul style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
+                                ${featuresListHtml}
+                            </ul>
+                        </div>
+                        <div style="width: 320px; max-width: 100%; height: 220px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border);">
+                            <img src="${cat.img}" alt="${cat.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+                </div>
+                <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 20px;">Tous les services disponibles de cette catégorie :</h3>
+                ${servicesListHtml}
+            `;
+
+            detailContainer.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showMainPage() {
+            document.getElementById('categoryDetailPageContainer').style.display = 'none';
+            document.getElementById('mainPageContainer').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openOrderPopupDirect(catId, serviceIdx) {
+            const cat = categories.find(c => c.id === catId);
+            const selectedService = cat.services[serviceIdx];
+
+            currentOrderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• ${cat.name} ➔ ${selectedService.name} (${selectedService.price})`;
+            
+            document.getElementById('popupOrderSummary').innerText = `${cat.name} : ${selectedService.name} (${selectedService.price})`;
+            document.getElementById('orderPopupModal').classList.add('open');
+
+            const confirmBtn = document.getElementById('confirmOrderSnapBtn');
+            confirmBtn.onclick = function() {
+                closeOrderPopup();
+                copyAndOpenSnapchat(currentOrderText);
+            };
         }
 
         function filterProducts() {
@@ -2121,7 +2394,6 @@
         let autoScrollInterval;
 
         if (track) {
-            // Gestion du défilement tactile et souris (Glisser-déposer)
             track.addEventListener('mousedown', (e) => {
                 isDown = true;
                 track.style.cursor = 'grabbing';
@@ -2150,7 +2422,6 @@
                 track.scrollLeft = scrollLeft - walk;
             });
 
-            // Pause du défilement automatique au survol
             track.addEventListener('mouseenter', stopAutoScroll);
             track.addEventListener('mouseleave', startAutoScroll);
         }
