@@ -1850,41 +1850,15 @@
         const mySnapchatUrl = "https://www.snapchat.com/@jackda10";
 
         const categories = [
-            {
-                id: "booking",
-                name: "Booking -50%",
-                category: "Voyages & Réservations",
-                desc: "Profitez de réductions exceptionnelles sur vos réservations d'hôtel.",
-                img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&auto=format&fit=crop&q=80",
-                badge: "Offre Spéciale",
-                features: ["Économies garanties", "Réservation rapide", "Réservez dès maintenant !"],
-                services: [
-                    { 
-                        name: "Sélectionner un service", 
-                        price: "---", 
-                        info: "Veuillez sélectionner un service valide pour continuer." 
-                    },
-                    { 
-                        name: "Hôtel + de 1000 €", 
-                        price: "Sur Devis", 
-                        info: "<strong>Hôtel (plus de 1000 €) :</strong> -50 % de réduction ! Réservez dès maintenant !" 
-                    },
-                    { 
-                        name: "Hôtel - de 1000 €", 
-                        price: "Sur Devis", 
-                        info: "<strong>Hôtel (moins de 1000 €) :</strong> -40 % de réduction ! Réservez dès maintenant !" 
-                    }
-                ]
-            },
-            {
-                id: "amendes",
-                name: "Amendes & Procédures",
-                category: "Amendes & Procédures",
-                desc: "Grille tarifaire officielle pour la prise en charge de vos amendes et forfaits majorés.",
-                img: "https://leocare.eu/fr/wp-content/uploads/2025/04/avis-contravention.jpg",
-                badge: "Tarifs Fixes",
-                features: ["Arrangement si plusieurs amendes", "Traitement rapide", "Expertise 10 ans", "Nous pouvons traiter vos amendes sans aucune perte de points sur votre permis", "Nous pouvons traiter vos amendes uniquement en l'absence de contrôle de police en flagrant délit !"],
-                services: [
+                   {
+                      id: "amendes",
+                      name: "Amendes & Procédures",
+                      category: "Amendes & Procédures",
+                      desc: "Grille tarifaire officielle pour la prise en charge de vos amendes et forfaits majorés.",
+                      img: "https://leocare.eu/fr/wp-content/uploads/2025/04/avis-contravention.jpg",
+                      badge: "Tarifs Fixes",
+                      features: ["Arrangement si plusieurs amendes", "Traitement rapide", "Expertise 10 ans", "Nous pouvons traiter vos amendes sans aucune perte de points sur votre permis", "Nous pouvons traiter vos amendes uniquement en l'absence de contrôle de police en flagrant délit !"],
+                      services: [
                     { 
                         name: "Sélectionner un service", 
                         price: "---", 
@@ -1995,6 +1969,32 @@
                 ]
             },
             {
+                id: "booking",
+                name: "Booking -50%",
+                category: "Voyages & Réservations",
+                desc: "Profitez de réductions exceptionnelles sur vos réservations d'hôtel.",
+                img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&auto=format&fit=crop&q=80",
+                badge: "Offre Spéciale",
+                features: ["Économies garanties", "Réservation rapide", "Réservez dès maintenant !"],
+                services: [
+                    { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
+                    { 
+                        name: "Hôtel + de 1000 €", 
+                        price: "Sur Devis", 
+                        info: "<strong>Hôtel (plus de 1000 €) :</strong> -50 % de réduction ! Réservez dès maintenant !" 
+                    },
+                    { 
+                        name: "Hôtel - de 1000 €", 
+                        price: "Sur Devis", 
+                        info: "<strong>Hôtel (moins de 1000 €) :</strong> -40 % de réduction ! Réservez dès maintenant !" 
+                    }
+                ]
+            },
+            {
                 id: "permis",
                 name: "Permis, Route & Véhicules",
                 category: "Permis & Route",
@@ -2072,6 +2072,27 @@
                         info: "<strong>Informations personnelles :</strong><br><br>• Nom : *********<br>• Prénom : *********<br>• Adresse : *******<br>• Date de naissance : *<br>• Lieu de naissance : *<br>• Téléphone (optionnel) : **<br>• N° Permis [neph] (optionnel) : ***<br><br><strong>Situation du permis de conduire :</strong><br>• Annulation ou suspension du permis : *****<br>• (Durée de la suspension) : **<br>• Motifs (perte de points, alcool ou stup) : *****<br>• Date du rdv commission médicale : *****" 
                     },
                     { name: "Test Psychotechnique", price: "150€", info: "Préparation et démarches pour vos tests psychotechniques." }
+                ]
+            },
+                {
+                id: "Location",
+                name: "SIXT",
+                category: "Location",
+                desc: "Profitez de réductions exceptionnelles sur vos locations de véhicule.",
+                img: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/31/43/f9/2e/sixt-rent-a-car-miami.jpg?w=700&h=-1&s=1",
+                badge: "SIXT -50%",
+                features: ["Un large choix de véhicules", "La liberté de voyager", "Le confort sur la route !"],
+                services: [
+                    { 
+                        name: "Sélectionner un service", 
+                        price: "---", 
+                        info: "Veuillez sélectionner un service valide pour continuer." 
+                    },
+                    { 
+                        name: "Location de véhicule", 
+                        price: "Sur Devis", 
+                        info: "<strong>Profitez dès maintenant de 50% de réduction sur votre prochaine location de véhicule chez Sixt.<strong><br>Que vous ayez besoin d'une citadine agile pour la ville ou d'un SUV spacieux pour voyager en touteS sécurité, trouvez le modèle qui vous correspond." 
+                    }
                 ]
             },
             {
