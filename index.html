@@ -1359,6 +1359,8 @@
             .page-scroll-buttons {
                 bottom: 15px;
                 right: 15px;
+                top: auto;
+                transform: none;
             }
 
             .scroll-btn {
@@ -2145,6 +2147,8 @@
             }
         ];
 
+        let currentOrderText = "";
+
         function renderProducts(filterText = '') {
             const grid = document.getElementById('productGrid');
             if (!grid) return;
@@ -2222,6 +2226,56 @@
             });
         }
 
+        function updatePrice(catId) {
+            const select = document.getElementById(`select-${catId}`);
+            const priceTag = document.getElementById(`price-${catId}`);
+            const infoBtn = document.getElementById(`info-btn-${catId}`);
+            if (!select || !priceTag) return;
+
+            const selectedIdx = select.value;
+            const cat = categories.find(c => c.id === catId);
+
+            if (selectedIdx === "" || selectedIdx === null) {
+                priceTag.innerText = "---";
+                if (infoBtn) {
+                    infoBtn.disabled = true;
+                    infoBtn.classList.add('info-btn-attention');
+                }
+                return;
+            }
+
+            const service = cat.services[selectedIdx];
+            priceTag.innerText = service.price;
+            if (infoBtn) {
+                infoBtn.disabled = false;
+                infoBtn.classList.remove('info-btn-attention');
+            }
+        }
+
+        function filterProducts() {
+            const input = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('searchClearBtn');
+            if (!input) return;
+
+            const val = input.value;
+            if (val.length > 0) {
+                clearBtn.classList.add('visible');
+            } else {
+                clearBtn.classList.remove('visible');
+            }
+            renderProducts(val);
+        }
+
+        function clearSearchInput() {
+            const input = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('searchClearBtn');
+            if (input) {
+                input.value = '';
+                if (clearBtn) clearBtn.classList.remove('visible');
+                renderProducts('');
+            }
+        }
+
         function openCategoryPage(catId) {
             const cat = categories.find(c => c.id === catId);
             if (!cat) return;
@@ -2279,6 +2333,56 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        function openTrialModal() {
+            document.getElementById('trialModal').classList.add('open');
+        }
+
+        function closeTrialModal() {
+            document.getElementById('trialModal').classList.remove('open');
+        }
+
+        function openServiceDetailModal(catId) {
+            const select = document.getElementById(`select-${catId}`);
+            if (!select || select.value === "") return;
+
+            const cat = categories.find(c => c.id === catId);
+            const service = cat.services[select.value];
+
+            document.getElementById('modalCatName').innerText = cat.name;
+            document.getElementById('modalServiceName').innerText = service.name;
+            document.getElementById('modalServiceDesc').innerHTML = service.info;
+            document.getElementById('modalServicePrice').innerText = service.price;
+
+            currentOrderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• Catégorie : ${cat.name}\n• Service : ${service.name}\n• Tarif : ${service.price}`;
+            
+            document.getElementById('modalOrderBtn').onclick = function() {
+                closeServiceDetailModal();
+                openOrderPopupWithText(currentOrderText);
+            };
+
+            document.getElementById('serviceDetailModal').classList.add('open');
+        }
+
+        function closeServiceDetailModal() {
+            document.getElementById('serviceDetailModal').classList.remove('open');
+        }
+
+        function openOrderPopup(catId) {
+            const select = document.getElementById(`select-${catId}`);
+            if (!select || select.value === "") {
+                alert("Veuillez d'abord sélectionner un service dans le menu déroulant.");
+                return;
+            }
+
+            const cat = categories.find(c => c.id === catId);
+            const service = cat.services[select.value];
+
+            currentOrderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• Catégorie : ${cat.name}\n• Service : ${service.name}\n• Tarif : ${service.price}`;
+            
+            document.getElementById('popupOrderSummary').innerText = `${cat.name} - ${service.name} (${service.price})`;
+            document.getElementById('orderPopupModal').classList.add('open');
+        }
+
         function openOrderPopupDirect(catId, serviceIdx) {
             const cat = categories.find(c => c.id === catId);
             const selectedService = cat.services[serviceIdx];
@@ -2289,7 +2393,69 @@
             document.getElementById('orderPopupModal').classList.add('open');
         }
 
-        // Script ajouté pour le défilement automatique des avis
+        function openOrderPopupWithText(text) {
+            currentOrderText = text;
+            document.getElementById('popupOrderSummary').innerText = text;
+            document.getElementById('orderPopupModal').classList.add('open');
+        }
+
+        function closeOrderPopup() {
+            document.getElementById('orderPopupModal').classList.remove('open');
+        }
+
+        document.getElementById('confirmOrderSnapBtn').onclick = function() {
+            navigator.clipboard.writeText(currentOrderText).then(() => {
+                const notif = document.getElementById('copyNotification');
+                notif.classList.add('show');
+                setTimeout(() => notif.classList.remove('show'), 3500);
+                setTimeout(() => {
+                    window.open(mySnapchatUrl, '_blank');
+                }, 800);
+            }).catch(() => {
+                window.open(mySnapchatUrl, '_blank');
+            });
+            closeOrderPopup();
+        };
+
+        function copyTrialForSnap() {
+            const trialText = "Bonjour JACKDA10, je souhaite obtenir une consultation gratuite concernant mon dossier administratif.";
+            navigator.clipboard.writeText(trialText).then(() => {
+                const notif = document.getElementById('copyNotification');
+                notif.classList.add('show');
+                setTimeout(() => notif.classList.remove('show'), 3500);
+            });
+        }
+
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            const wasActive = item.classList.contains('active');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+            if (!wasActive) {
+                item.classList.add('active');
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToBottom() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        // Fonction corrigée pour les flèches du carrousel d'avis
+        function scrollReviews(direction) {
+            const track = document.getElementById('reviewsTrack');
+            if (track) {
+                const scrollAmount = 320; // Largeur d'une carte d'avis + gap
+                track.scrollBy({
+                    left: direction * scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Script gérant le rendu initial et le défilement automatique des avis
         document.addEventListener('DOMContentLoaded', () => {
             renderProducts();
             
@@ -2316,6 +2482,15 @@
                 reviewsTrack.addEventListener('mouseleave', () => {
                     isPaused = false;
                 });
+
+                // Support tactile pour stopper le défilement auto quand l'utilisateur touche les avis sur téléphone
+                reviewsTrack.addEventListener('touchstart', () => {
+                    isPaused = true;
+                }, {passive: true});
+
+                reviewsTrack.addEventListener('touchend', () => {
+                    setTimeout(() => { isPaused = false; }, 3000);
+                }, {passive: true});
             }
         });
     </script>
