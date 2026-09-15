@@ -2529,5 +2529,415 @@
             startAutoScroll();
         };
     </script>
+<!-- ==========================================
+     CHATBOT INTÉGRÉ - CODE COMPLET ET COMMENTÉ
+     ========================================== -->
+
+<!-- Styles CSS du Chatbot -->
+<style>
+    /* Conteneur principal du widget de chat en bas à droite */
+    #chatbot-widget {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Bouton flottant pour ouvrir/fermer le chatbot */
+    #chatbot-toggle-btn {
+        background: linear-gradient(135deg, #b91c1c, #dc2626);
+        color: #ffffff;
+        border: none;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    #chatbot-toggle-btn:hover {
+        transform: scale(1.08);
+        background: linear-gradient(135deg, #dc2626, #ef4444);
+    }
+
+    /* Fenêtre de discussion cachée par défaut */
+    #chatbot-window {
+        position: absolute;
+        bottom: 75px;
+        right: 0;
+        width: 350px;
+        max-width: 90vw;
+        height: 480px;
+        background: #121218;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        animation: chatSlideIn 0.3s ease forwards;
+    }
+
+    @keyframes chatSlideIn {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* En-tête de la fenêtre de chat */
+    .chatbot-header {
+        background: rgba(18, 18, 24, 0.95);
+        padding: 15px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .chatbot-header-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .chatbot-avatar {
+        width: 35px;
+        height: 35px;
+        background: #dc2626;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.9rem;
+    }
+
+    .chatbot-title h4 {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #fff;
+    }
+
+    .chatbot-title span {
+        font-size: 0.72rem;
+        color: #94a3b8;
+    }
+
+    .chatbot-close {
+        background: none;
+        border: none;
+        color: #94a3b8;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: color 0.2s;
+    }
+
+    .chatbot-close:hover {
+        color: #fff;
+    }
+
+    /* Corps de la conversation (historique des messages) */
+    .chatbot-body {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: #0a0a0f;
+    }
+
+    .chat-message {
+        max-width: 80%;
+        padding: 10px 14px;
+        border-radius: 14px;
+        font-size: 0.85rem;
+        line-height: 1.4;
+        word-break: break-word;
+    }
+
+    .chat-message.bot {
+        background: rgba(255, 255, 255, 0.06);
+        color: #e2e8f0;
+        align-self: flex-start;
+        border-bottom-left-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .chat-message.user {
+        background: #dc2626;
+        color: #fff;
+        align-self: flex-end;
+        border-bottom-right-radius: 4px;
+    }
+
+    /* Bouton Snapchat jaune demandé (#FFFC00) intégré dans les messages complexes */
+    .snapchat-action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 8px;
+        background: #fffc00 !important;
+        color: #000000 !important;
+        font-weight: 800;
+        font-size: 0.82rem;
+        padding: 10px 16px;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: background 0.2s, transform 0.2s;
+        box-shadow: 0 4px 12px rgba(255, 252, 0, 0.3);
+    }
+
+    .snapchat-action-btn:hover {
+        background: #e5e200 !important;
+        transform: translateY(-2px);
+    }
+
+    /* Zone de saisie du message utilisateur */
+    .chatbot-footer {
+        padding: 12px 15px;
+        background: rgba(18, 18, 24, 0.95);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        gap: 8px;
+    }
+
+    .chatbot-input {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 25px;
+        padding: 10px 15px;
+        color: #fff;
+        font-size: 0.85rem;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    .chatbot-input:focus {
+        border-color: #dc2626;
+    }
+
+    .chatbot-send-btn {
+        background: #dc2626;
+        color: #fff;
+        border: none;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+        flex-shrink: 0;
+    }
+
+    .chatbot-send-btn:hover {
+        background: #ef4444;
+    }
+</style>
+
+<!-- Structure HTML du Widget de Chat -->
+<div id="chatbot-widget">
+    <!-- Bouton flottant -->
+    <button id="chatbot-toggle-btn" onclick="toggleChatbot()" title="Besoin d'aide ? Discutez avec notre assistant">
+        <i class="fa-solid fa-comments"></i>
+    </button>
+
+    <!-- Fenêtre de chat -->
+    <div id="chatbot-window">
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+                <div class="chatbot-avatar"><i class="fa-solid fa-robot"></i></div>
+                <div class="chatbot-title">
+                    <h4>Assistant JACKDA10</h4>
+                    <span>En ligne</span>
+                </div>
+            </div>
+            <button class="chatbot-close" onclick="toggleChatbot()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="chatbot-body" id="chatbotBody">
+            <!-- Message d'accueil automatique -->
+            <div class="chat-message bot">
+                Bonjour ! Je suis l'assistant virtuel de JACKDA10. Comment puis-je vous aider aujourd'hui (permis, amendes, réductions booking, certificats...) ?
+            </div>
+        </div>
+
+        <div class="chatbot-footer">
+            <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Posez votre question ici..." onkeydown="handleChatKeyDown(event)">
+            <button class="chatbot-send-btn" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- Script JavaScript du Chatbot -->
+<script>
+    // URL Snapchat officielle configurée pour les redirections
+    const SNAPCHAT_URL = "https://www.snapchat.com/@jackda10";
+
+    // Base de connaissances intelligente basée sur les mots-clés extraits du site
+    const chatbotKnowledgeBase = [
+        {
+            keywords: ["amende", "amendes", "contravention", "majorée", "90", "45", "35"],
+            response: "Nous gérons vos amendes et forfaits majorés avec des tarifs fixes (à partir de 10€) et un traitement sans perte de points sur votre permis (hors flagrant délit). Souhaitez-vous valider votre prise en charge ?"
+        },
+        {
+            keywords: ["salut", "bonjour", "salam", "coucou", "hey", "yo", "ça va", "cv", "wesh"],
+            response: "Salut à toi ! Comment ça va ? Dis-moi comment je peux t'aider aujourd'hui."
+        },
+        {
+            keywords: ["amende", "amendes", "contravention", "majorée", "majoré", "radar", "pv", "fps", "stationnement", "radar auto", "90", "45", "35"],
+            response: "Tu as reçu une amende ou un forfait majoré ? On gère ça rapidement à partir de 10€, et surtout sans perdre de points sur ton permis (hors flagrant délit). Viens en discuter sur Snapchat pour régler ça !"
+        },
+        {
+            keywords: ["merci", "top", "cool", "impec", "impeccable", "super", "génial", "merci bcp"],
+            response: "Avec plaisir ! N'hésite pas si tu as d'autres questions ou besoin d'un coup de main. 😊"
+        },
+        {
+            keywords: ["certificat", "hospitalisation", "travail", "arret", "arrêt", "justificatif", "medical", "médical", "maladie", "boulot"],
+            response: "On propose des documents officiels et certificats d'hospitalisation en toute confidentialité pour tes démarches ou ton travail. Contacte-nous pour voir les détails."
+        },
+        {
+            keywords: ["au revoir", "bye", "a+klin", "à plus", "tchao"],
+            response: "À bientôt ! Passe une excellente journée et n'hésite pas à repasser si besoin."
+        },
+        {
+            keywords: ["permis", "decenale", "points", "code", "annulation", "retrait", "conduite"],
+            response: "Spécialiste depuis 10 ans dans l'accompagnement des dossiers de permis, annulation, code et tests psychotechniques. Nous vous offrons une assistance discrète et sécurisée."
+        },
+        {
+            keywords: ["booking", "voyage", "vol", "hôtel", "vacances", "partir", "billet", "reservation", "réservation", "reductions", "réduction", "-50", "moins cher"],
+            response: "Tu veux voyager sans te ruiner ? On te propose jusqu'à -50% de réduction sur tes réservations d'hôtels et tes billets de vol. Dis-nous ta destination sur Snapchat !"
+        },
+        {
+            keywords: ["permis", "points",  "bateau", "code", "annulation", "retrait", "conduite", "mon permis", "récupérer", "solde"],
+            response: "Les soucis de permis, c'est stressant, mais on est là pour t'accompagner discrètement (code, dossiers, examens, démarches). On en parle directement ? 👇"
+        },
+        {
+            keywords: ["booking", "voyage", "vol", "hotel", "vacances", "reductions", "reduction", "-50"],
+            response: "Profitez de réductions exceptionnelles allant jusqu'à -50% sur vos réservations de vols et d'hôtels via notre service Booking dédié ! Économies garanties."
+        },
+        {
+            keywords: ["certificat", "hospitalisation", "travail", "arret", "traivail",  "justificatif", "medical"],
+            response: "Nous délivrons des certificats d'hospitalisation et justificatifs officiels pour aménagement d'horaires ou dossiers professionnels en toute confidentialité."
+        },
+        {
+            keywords: ["contact", "joindre", "parler", "humain", "personne", "telephone", "téléphone", "discuter", "aide", "sos", "admin", "createur", "createur", "soutenir", "repondre", "répondre", "bot", "robot"],
+            response: "Le plus simple pour qu'on discute de ton cas le mieux c'est de nous écrire directement sur notre Snapchat officiel !"
+        },
+        {
+           keywords: ["aide", "comment", "fonctionne", "tutoriel", "guide"],
+           response: "Je suis là pour vous guider ! Dites-moi ce que vous cherchez (par exemple : les tarifs, les horaires ou la création de dossier) et je vous orienterai."
+        },
+        {  
+           keywords: ["snap", "snapchat"],
+           response: "Voici mon snapchat @ JACKDA10"
+        },
+        {
+            keywords: ["sûr", "fiable", "arnaque", "confiance", "sérieux", "vrai", "légitime", "legit", "escroc", "fake", "sur", "c'est sur", "c'est une arnaque"],
+            response: "Tu peux avoir total confiance : on a des années d'expérience et des milliers de clients satisfaits. Viens échanger avec nous en direct, on te prouvera notre sérieux !"
+        },
+        {
+            keywords: ["tarif", "prix", "combien", "coout", "coûte", "devis"],
+            response: "Nos tarifs varient selon la prestation choisie (amendes dès 10€, devis sur mesure pour les voyages ou dossiers complexes). Contactez-nous directement pour chiffrer votre demande."
+        },
+        {
+            keywords: ["tarif", "prix", "combien", "coout", "coût", "coute", "coûte", "devis", "c'est combien", "payer", "paiement", "euro", "euros", "€", "c'est cher", "gratuit", "argent", "facture"],
+            response: "Nos tarifs sont super accessibles (amendes dès 10€, devis sur mesure pour le reste). C'est rapide, discret et efficace. Viens voir avec nous sur Snapchat pour chiffrer ton besoin !"
+        },
+        {
+            keywords: ["contact", "joindre", "parler", "humain", "telephone", "snap"],
+            response: "Pour échanger directement avec notre équipe et traiter votre dossier, vous pouvez nous contacter sur notre profil officiel Snapchat."
+        }
+    ];
+
+    // Fonction pour ouvrir ou fermer la fenêtre de chat
+    function toggleChatbot() {
+        const windowElem = document.getElementById('chatbot-window');
+        if (windowElem.style.display === 'flex') {
+            windowElem.style.display = 'none';
+        } else {
+            windowElem.style.display = 'flex';
+            document.getElementById('chatbotInput').focus();
+        }
+    }
+
+    // Gestion de la touche "Entrée" dans l'input
+    function handleChatKeyDown(event) {
+        if (event.key === 'Enter') {
+            sendChatMessage();
+        }
+    }
+
+    // Fonction principale d'envoi et d'analyse du message utilisateur
+    function sendChatMessage() {
+        const inputElem = document.getElementById('chatbotInput');
+        const userText = inputElem.value.trim();
+        if (!userText) return;
+
+        // 1. Afficher le message de l'utilisateur
+        appendMessage(userText, 'user');
+        inputElem.value = '';
+
+        // 2. Traiter la réponse du chatbot après un court délai simulant la réflexion
+        setTimeout(() => {
+            generateBotResponse(userText);
+        }, 500);
+    }
+
+
+
+    // Ajout d'un message dans l'historique du chat
+    function appendMessage(text, sender, isComplex = false) {
+        const bodyElem = document.getElementById('chatbotBody');
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `chat-message ${sender}`;
+        
+        if (isComplex) {
+            msgDiv.innerHTML = text + `<br><a href="${SNAPCHAT_URL}" target="_blank" rel="noopener noreferrer" class="snapchat-action-btn"><i class="fa-brands fa-snapchat"></i> Contactez-nous sur Snapchat</a>`;
+        } else {
+            msgDiv.textContent = text;
+        }
+
+        bodyElem.appendChild(msgDiv);
+        bodyElem.scrollTop = bodyElem.scrollHeight; // Défilement automatique vers le bas
+    }
+
+    // Analyse sémantique simple basée sur les mots-clés
+    function generateBotResponse(userInput) {
+        const cleanInput = userInput.toLowerCase();
+        let matchedResponse = null;
+
+        // Recherche d'une correspondance par mots-clés
+        for (const item of chatbotKnowledgeBase) {
+            for (const kw of item.keywords) {
+                // Utilisation d'une vérification de mot-clé incluse
+                if (cleanInput.includes(kw)) {
+                    matchedResponse = item.response;
+                    break;
+                }
+            }
+            if (matchedResponse) break;
+        }
+
+        // Si aucun mot-clé ne correspond ou si la question est complexe, affichage du message de redirection Snapchat avec le bouton jaune (#FFFC00)
+        if (matchedResponse) {
+            appendMessage(matchedResponse, 'bot');
+        } else {
+            const fallbackText = "Merci ! Pour une réponse plus détaillée et un accompagnement personnalisé sur votre dossier, contactez-nous sur Snapchat :";
+            appendMessage(fallbackText, 'bot', true);
+        }
+    }
+
+
+</script>
 </body>
 </html>
