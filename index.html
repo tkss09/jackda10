@@ -1059,7 +1059,6 @@
             color: #fff;
         }
 
-        /* STYLE AJOUTÉ : Bloc d'avis style capture d'écran juste en bas des avis */
         .extra-reviews-banner {
             margin-top: 30px;
             background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(18, 18, 24, 0.9));
@@ -2233,7 +2232,7 @@
 
             let servicesListHtml = '';
             cat.services.forEach((srv, idx) => {
-                if (idx === 0) return; // Ignore le placeholder "Sélectionner un service"
+                if (idx === 0) return;
                 servicesListHtml += `
                     <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; backdrop-filter: blur(10px);">
                         <div style="flex: 1; min-width: 250px;">
@@ -2284,245 +2283,41 @@
             const cat = categories.find(c => c.id === catId);
             const selectedService = cat.services[serviceIdx];
 
-            currentOrderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• ${cat.name} ➔ ${selectedService.name} (${selectedService.price})`;
+            currentOrderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• Catégorie : ${cat.name}\n• Service : ${selectedService.name}\n• Tarif : ${selectedService.price}`;
             
-            document.getElementById('popupOrderSummary').innerText = `${cat.name} : ${selectedService.name} (${selectedService.price})`;
+            document.getElementById('popupOrderSummary').innerText = `${cat.name} - ${selectedService.name} (${selectedService.price})`;
             document.getElementById('orderPopupModal').classList.add('open');
-
-            const confirmBtn = document.getElementById('confirmOrderSnapBtn');
-            confirmBtn.onclick = function() {
-                closeOrderPopup();
-                copyAndOpenSnapchat(currentOrderText);
-            };
         }
 
-        function filterProducts() {
-            const searchInput = document.getElementById('searchInput');
-            const clearBtn = document.getElementById('searchClearBtn');
-            if (searchInput) {
-                const val = searchInput.value;
-                if (val.trim() !== '') {
-                    clearBtn.classList.add('visible');
-                } else {
-                    clearBtn.classList.remove('visible');
-                }
-                renderProducts(val);
-            }
-        }
-
-        function clearSearchInput() {
-            const searchInput = document.getElementById('searchInput');
-            const clearBtn = document.getElementById('searchClearBtn');
-            if (searchInput) {
-                searchInput.value = '';
-                clearBtn.classList.remove('visible');
-                renderProducts('');
-                searchInput.focus();
-            }
-        }
-
-        function updatePrice(catId) {
-            const selectElement = document.getElementById(`select-${catId}`);
-            const priceTag = document.getElementById(`price-${catId}`);
-            const infoBtn = document.getElementById(`info-btn-${catId}`);
-            const selectedValue = selectElement.value;
-
-            const cat = categories.find(c => c.id === catId);
-
-            if (selectedValue === "" || selectedValue === null) {
-                priceTag.innerText = "---";
-                infoBtn.disabled = true;
-                infoBtn.classList.add('info-btn-attention');
-            } else {
-                const serviceIndex = parseInt(selectedValue);
-                const selectedService = cat.services[serviceIndex];
-                
-                priceTag.innerText = selectedService.price;
-                infoBtn.disabled = false;
-                infoBtn.classList.remove('info-btn-attention');
-            }
-        }
-
-        function openServiceDetailModal(catId) {
-            const cat = categories.find(c => c.id === catId);
-            const select = document.getElementById(`select-${catId}`);
-            const selectedValue = select.value;
-
-            if (selectedValue === "" || selectedValue === null) return;
-
-            const serviceIndex = parseInt(selectedValue);
-            const selectedService = cat.services[serviceIndex];
-
-            document.getElementById('modalCatName').innerText = cat.category;
-            document.getElementById('modalServiceName').innerText = selectedService.name;
-            document.getElementById('modalServiceDesc').innerHTML = selectedService.info || cat.desc;
-            document.getElementById('modalServicePrice').innerText = selectedService.price;
-
-            const orderBtn = document.getElementById('modalOrderBtn');
-            orderBtn.onclick = function() {
-                closeServiceDetailModal();
-                openOrderPopup(catId);
-            };
-
-            document.getElementById('serviceDetailModal').classList.add('open');
-        }
-
-        function closeServiceDetailModal() {
-            document.getElementById('serviceDetailModal').classList.remove('open');
-        }
-
-        let currentOrderText = "";
-
-        function openOrderPopup(catId) {
-            const cat = categories.find(c => c.id === catId);
-            const select = document.getElementById(`select-${catId}`);
-            const selectedValue = select.value;
-
-            if (selectedValue === "" || selectedValue === null) {
-                alert("Veuillez d'abord sélectionner un service dans la liste déroulante.");
-                return;
-            }
-
-            const serviceIndex = parseInt(selectedValue);
-            const selectedService = cat.services[serviceIndex];
-
-            currentOrderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• ${cat.name} ➔ ${selectedService.name} (${selectedService.price})`;
-            
-            document.getElementById('popupOrderSummary').innerText = `${cat.name} : ${selectedService.name} (${selectedService.price})`;
-            document.getElementById('orderPopupModal').classList.add('open');
-
-            const confirmBtn = document.getElementById('confirmOrderSnapBtn');
-            confirmBtn.onclick = function() {
-                closeOrderPopup();
-                copyAndOpenSnapchat(currentOrderText);
-            };
-        }
-
-        function closeOrderPopup() {
-            document.getElementById('orderPopupModal').classList.remove('open');
-        }
-
-        function openTrialModal() {
-            document.getElementById('trialModal').classList.add('open');
-        }
-
-        function closeTrialModal() {
-            document.getElementById('trialModal').classList.remove('open');
-        }
-
-        function copyTrialForSnap() {
-            copyAndOpenSnapchat("Bonjour JACKDA10, je souhaite obtenir une consultation gratuite concernant mon dossier.");
-        }
-
-        function copyAndOpenSnapchat(text) {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => {
-                    showCopyNotification();
-                    setTimeout(() => {
-                        window.open(mySnapchatUrl, '_blank');
-                    }, 1000);
-                }).catch(() => {
-                    fallbackCopyAndOpen(text);
-                });
-            } else {
-                fallbackCopyAndOpen(text);
-            }
-        }
-
-        function fallbackCopyAndOpen(text) {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed";
-            textArea.style.top = "0";
-            textArea.style.left = "0";
-            textArea.style.opacity = "0";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                showCopyNotification();
-            } catch (err) {
-                console.error('Erreur lors de la copie', err);
-            }
-            document.body.removeChild(textArea);
-            setTimeout(() => {
-                window.open(mySnapchatUrl, '_blank');
-            }, 1000);
-        }
-
-        function showCopyNotification() {
-            const notification = document.getElementById('copyNotification');
-            notification.classList.add('show');
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        function scrollReviews(direction) {
-            const track = document.getElementById('reviewsTrack');
-            if (!track) return;
-            const scrollAmount = 320;
-            track.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
-        }
-
-        function toggleFaq(element) {
-            const item = element.parentElement;
-            const wasActive = item.classList.contains('active');
-            
-            document.querySelectorAll('.faq-item').forEach(i => {
-                i.classList.remove('active');
-            });
-
-            if (!wasActive) {
-                item.classList.add('active');
-            }
-        }
-
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function scrollToBottom() {
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        }
-
-        // Glissement à la souris pour le carrousel d'avis
-        const track = document.getElementById('reviewsTrack');
-        if (track) {
-            let isDown = false;
-            let startX;
-            let scrollLeft;
-
-            track.addEventListener('mousedown', (e) => {
-                isDown = true;
-                track.style.cursor = 'grabbing';
-                startX = e.pageX - track.offsetLeft;
-                scrollLeft = track.scrollLeft;
-            });
-
-            track.addEventListener('mouseleave', () => {
-                isDown = false;
-                track.style.cursor = 'grab';
-            });
-
-            track.addEventListener('mouseup', () => {
-                isDown = false;
-                track.style.cursor = 'grab';
-            });
-
-            track.addEventListener('mousemove', (e) => {
-                if (!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - track.offsetLeft;
-                const walk = (x - startX) * 2;
-                track.scrollLeft = scrollLeft - walk;
-            });
-        }
-
-        window.onload = function() {
+        // Script ajouté pour le défilement automatique des avis
+        document.addEventListener('DOMContentLoaded', () => {
             renderProducts();
-        };
+            
+            const reviewsTrack = document.getElementById('reviewsTrack');
+            if (reviewsTrack) {
+                let scrollSpeed = 1;
+                let isPaused = false;
+
+                function autoScroll() {
+                    if (!isPaused) {
+                        reviewsTrack.scrollLeft += scrollSpeed;
+                        if (reviewsTrack.scrollLeft >= (reviewsTrack.scrollWidth - reviewsTrack.clientWidth - 5)) {
+                            reviewsTrack.scrollLeft = 0;
+                        }
+                    }
+                }
+
+                let scrollInterval = setInterval(autoScroll, 30);
+
+                reviewsTrack.addEventListener('mouseenter', () => {
+                    isPaused = true;
+                });
+
+                reviewsTrack.addEventListener('mouseleave', () => {
+                    isPaused = false;
+                });
+            }
+        });
     </script>
 </body>
 </html>
