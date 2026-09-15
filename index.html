@@ -1274,9 +1274,10 @@
 
         .copy-notification.show { transform: translateX(-50%) translateY(0); }
 
+        /* BOUTONS DE DÉFILEMENT PLACÉS AU MILIEU DE LA PAGE À DROITE */
         .page-scroll-buttons {
             position: fixed;
-            top: 70%;
+            top: 50%;
             right: 20px;
             transform: translateY(-50%);
             z-index: 2500;
@@ -1347,6 +1348,7 @@
                 width: 100%;
             }
 
+            /* Sur mobile, on les garde en bas à droite pour ne pas gêner la lecture au centre */
             .page-scroll-buttons {
                 bottom: 15px;
                 right: 15px;
@@ -1375,6 +1377,7 @@
 
     <div class="copy-notification" id="copyNotification">📋 Message copié ! Colle-le sur Snapchat.</div>
 
+    <!-- BOUTONS DE DÉFILEMENT (Milieu à droite) -->
     <div class="page-scroll-buttons">
         <button class="scroll-btn" onclick="scrollToTop()" title="Remonter en haut"><i class="fa-solid fa-arrow-up"></i></button>
         <button class="scroll-btn" onclick="scrollToBottom()" title="Aller tout en bas"><i class="fa-solid fa-arrow-down"></i></button>
