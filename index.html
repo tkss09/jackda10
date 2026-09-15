@@ -1851,7 +1851,7 @@
                 id: "booking",
                 name: "Booking -50%",
                 category: "Voyages & Réservations",
-                desc: "Profitez de réductions exceptionnelles sur vos réservations de vacances vol et hôtel.",
+                desc: "Profitez de réductions exceptionnelles sur vos réservations d'hôtel.",
                 img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&auto=format&fit=crop&q=80",
                 badge: "Offre Spéciale",
                 features: ["Économies garanties", "Réservation rapide", "Réservez dès maintenant !"],
@@ -1862,14 +1862,14 @@
                         info: "Veuillez sélectionner un service valide pour continuer." 
                     },
                     { 
-                        name: "Vol + Hôtel (plus de 1000 €)", 
+                        name: "Hôtel (plus de 1000 €)", 
                         price: "Sur Devis", 
-                        info: "<strong>Vol + Hôtel (plus de 1000 €) :</strong> -50 % de réduction ! Réservez dès maintenant !" 
+                        info: "<strong>Hôtel (plus de 1000 €) :</strong> -50 % de réduction ! Réservez dès maintenant !" 
                     },
                     { 
-                        name: "Hôtel + Vol (moins de 1000 €)", 
+                        name: "Hôtel (moins de 1000 €)", 
                         price: "Sur Devis", 
-                        info: "<strong>Hôtel + Vol (moins de 1000 €) :</strong> -40 % de réduction ! Réservez dès maintenant !" 
+                        info: "<strong>Hôtel (moins de 1000 €) :</strong> -40 % de réduction ! Réservez dès maintenant !" 
                     }
                 ]
             },
@@ -2530,16 +2530,16 @@
         };
     </script>
 <!-- ==========================================
-     CHATBOT INTÉGRÉ - CODE COMPLET ET COMMENTÉ
+     CHATBOT INTÉGRÉ - CODE MODIFIÉ (BAS GAUCHE)
      ========================================== -->
 
 <!-- Styles CSS du Chatbot -->
 <style>
-    /* Conteneur principal du widget de chat en bas à droite */
+    /* Conteneur principal du widget de chat en BAS À GAUCHE */
     #chatbot-widget {
         position: fixed;
         bottom: 20px;
-        right: 20px;
+        left: 20px; /* Déplacé à gauche */
         z-index: 9999;
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
@@ -2566,11 +2566,11 @@
         background: linear-gradient(135deg, #dc2626, #ef4444);
     }
 
-    /* Fenêtre de discussion cachée par défaut */
+    /* Fenêtre de discussion positionnée à gauche */
     #chatbot-window {
         position: absolute;
         bottom: 75px;
-        right: 0;
+        left: 0; /* Aligné à gauche par rapport au bouton */
         width: 350px;
         max-width: 90vw;
         height: 480px;
@@ -2780,10 +2780,8 @@
 
 <!-- Script JavaScript du Chatbot -->
 <script>
-    // URL Snapchat officielle configurée pour les redirections
     const SNAPCHAT_URL = "https://www.snapchat.com/@jackda10";
 
-    // Base de connaissances intelligente basée sur les mots-clés extraits du site
     const chatbotKnowledgeBase = [
         {
             keywords: ["amende", "amendes", "contravention", "majorée", "90", "45", "35"],
@@ -2792,10 +2790,6 @@
         {
             keywords: ["salut", "bonjour", "salam", "coucou", "hey", "yo", "ça va", "cv", "wesh"],
             response: "Salut à toi ! Comment ça va ? Dis-moi comment je peux t'aider aujourd'hui."
-        },
-        {
-            keywords: ["amende", "amendes", "contravention", "majorée", "majoré", "radar", "pv", "fps", "stationnement", "radar auto", "90", "45", "35"],
-            response: "Tu as reçu une amende ou un forfait majoré ? On gère ça rapidement à partir de 10€, et surtout sans perdre de points sur ton permis (hors flagrant délit). Viens en discuter sur Snapchat pour régler ça !"
         },
         {
             keywords: ["merci", "top", "cool", "impec", "impeccable", "super", "génial", "merci bcp"],
@@ -2814,23 +2808,11 @@
             response: "Spécialiste depuis 10 ans dans l'accompagnement des dossiers de permis, annulation, code et tests psychotechniques. Nous vous offrons une assistance discrète et sécurisée."
         },
         {
-            keywords: ["booking", "voyage", "vol", "hôtel", "vacances", "partir", "billet", "reservation", "réservation", "reductions", "réduction", "-50", "moins cher"],
+            keywords: ["booking", "hôtel", "vacances", "partir", "billet", "reservation", "réservation", "reductions", "réduction", "-50", "moins cher"],
             response: "Tu veux voyager sans te ruiner ? On te propose jusqu'à -50% de réduction sur tes réservations d'hôtels et tes billets de vol. Dis-nous ta destination sur Snapchat !"
         },
         {
-            keywords: ["permis", "points",  "bateau", "code", "annulation", "retrait", "conduite", "mon permis", "récupérer", "solde"],
-            response: "Les soucis de permis, c'est stressant, mais on est là pour t'accompagner discrètement (code, dossiers, examens, démarches). On en parle directement ? 👇"
-        },
-        {
-            keywords: ["booking", "voyage", "vol", "hotel", "vacances", "reductions", "reduction", "-50"],
-            response: "Profitez de réductions exceptionnelles allant jusqu'à -50% sur vos réservations de vols et d'hôtels via notre service Booking dédié ! Économies garanties."
-        },
-        {
-            keywords: ["certificat", "hospitalisation", "travail", "arret", "traivail",  "justificatif", "medical"],
-            response: "Nous délivrons des certificats d'hospitalisation et justificatifs officiels pour aménagement d'horaires ou dossiers professionnels en toute confidentialité."
-        },
-        {
-            keywords: ["contact", "joindre", "parler", "humain", "personne", "telephone", "téléphone", "discuter", "aide", "sos", "admin", "createur", "createur", "soutenir", "repondre", "répondre", "bot", "robot"],
+            keywords: ["contact", "joindre", "parler", "humain", "personne", "telephone", "téléphone", "discuter", "aide", "sos", "admin", "createur", "soutenir", "repondre", "répondre", "bot", "robot"],
             response: "Le plus simple pour qu'on discute de ton cas le mieux c'est de nous écrire directement sur notre Snapchat officiel !"
         },
         {
@@ -2848,14 +2830,9 @@
         {
             keywords: ["tarif", "prix", "combien", "coout", "coût", "coute", "coûte", "devis", "c'est combien", "payer", "paiement", "euro", "euros", "€", "c'est cher", "gratuit", "argent", "facture"],
             response: "Nos tarifs sont super accessibles (amendes dès 10€, devis sur mesure pour le reste). C'est rapide, discret et efficace. Viens voir avec nous sur Snapchat pour chiffrer ton besoin !"
-        },
-        {
-            keywords: ["contact", "joindre", "parler", "humain", "telephone", "snap"],
-            response: "Pour échanger directement avec notre équipe et traiter votre dossier, vous pouvez nous contacter sur notre profil officiel Snapchat."
         }
     ];
 
-    // Fonction pour ouvrir ou fermer la fenêtre de chat
     function toggleChatbot() {
         const windowElem = document.getElementById('chatbot-window');
         if (windowElem.style.display === 'flex') {
@@ -2866,32 +2843,25 @@
         }
     }
 
-    // Gestion de la touche "Entrée" dans l'input
     function handleChatKeyDown(event) {
         if (event.key === 'Enter') {
             sendChatMessage();
         }
     }
 
-    // Fonction principale d'envoi et d'analyse du message utilisateur
     function sendChatMessage() {
         const inputElem = document.getElementById('chatbotInput');
         const userText = inputElem.value.trim();
         if (!userText) return;
 
-        // 1. Afficher le message de l'utilisateur
         appendMessage(userText, 'user');
         inputElem.value = '';
 
-        // 2. Traiter la réponse du chatbot après un court délai simulant la réflexion
         setTimeout(() => {
             generateBotResponse(userText);
         }, 500);
     }
 
-
-
-    // Ajout d'un message dans l'historique du chat
     function appendMessage(text, sender, isComplex = false) {
         const bodyElem = document.getElementById('chatbotBody');
         const msgDiv = document.createElement('div');
@@ -2904,18 +2874,15 @@
         }
 
         bodyElem.appendChild(msgDiv);
-        bodyElem.scrollTop = bodyElem.scrollHeight; // Défilement automatique vers le bas
+        bodyElem.scrollTop = bodyElem.scrollHeight;
     }
 
-    // Analyse sémantique simple basée sur les mots-clés
     function generateBotResponse(userInput) {
         const cleanInput = userInput.toLowerCase();
         let matchedResponse = null;
 
-        // Recherche d'une correspondance par mots-clés
         for (const item of chatbotKnowledgeBase) {
             for (const kw of item.keywords) {
-                // Utilisation d'une vérification de mot-clé incluse
                 if (cleanInput.includes(kw)) {
                     matchedResponse = item.response;
                     break;
@@ -2924,7 +2891,6 @@
             if (matchedResponse) break;
         }
 
-        // Si aucun mot-clé ne correspond ou si la question est complexe, affichage du message de redirection Snapchat avec le bouton jaune (#FFFC00)
         if (matchedResponse) {
             appendMessage(matchedResponse, 'bot');
         } else {
@@ -2932,8 +2898,6 @@
             appendMessage(fallbackText, 'bot', true);
         }
     }
-
-
 </script>
 </body>
 </html>
