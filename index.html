@@ -974,6 +974,8 @@
             cursor: grab;
             scrollbar-width: thin;
             scrollbar-color: var(--accent) var(--border);
+            pointer-events: auto !important;
+            touch-action: pan-x pan-y;
         }
 
         .reviews-track::-webkit-scrollbar {
@@ -1312,6 +1314,7 @@
             transition: var(--transition);
             backdrop-filter: blur(8px);
             font-size: 1rem;
+            pointer-events: auto !important;
         }
 
         .scroll-btn:hover {
@@ -1385,8 +1388,8 @@
     <div class="copy-notification" id="copyNotification">📋 Message copié ! Colle-le sur Snapchat.</div>
 
     <div class="page-scroll-buttons">
-        <button class="scroll-btn" onclick="scrollToTop()" title="Remonter en haut"><i class="fa-solid fa-arrow-up"></i></button>
-        <button class="scroll-btn" onclick="scrollToBottom()" title="Aller tout en bas"><i class="fa-solid fa-arrow-down"></i></button>
+        <button type="button" class="scroll-btn" onclick="scrollToTop()" title="Remonter en haut"><i class="fa-solid fa-arrow-up"></i></button>
+        <button type="button" class="scroll-btn" onclick="scrollToBottom()" title="Aller tout en bas"><i class="fa-solid fa-arrow-down"></i></button>
     </div>
 
     <header>
@@ -1595,8 +1598,8 @@
                     <p class="section-subtitle">Faites glisser de gauche à droite ou utilisez les flèches pour découvrir les avis</p>
                 </div>
                 <div class="carousel-nav-btns">
-                    <button class="carousel-btn" onclick="scrollReviews(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-                    <button class="carousel-btn" onclick="scrollReviews(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button type="button" class="carousel-btn" onclick="scrollReviews(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button type="button" class="carousel-btn" onclick="scrollReviews(1)"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
             </div>
 
@@ -2161,57 +2164,50 @@
                     if (idx === 0 && query !== '') return false;
                     return srv.name.toLowerCase().includes(query) || 
                            cat.name.toLowerCase().includes(query) || 
-                           cat.category.toLowerCase().includes(query);
+                           cat.category.toLowerCase().includes(query) ||
+                           srv.info.toLowerCase().includes(query);
                 });
 
-                if (query !== '' && filteredServices.length === 0) {
-                    return;
-                }
+                if (query !== '' && filteredServices.length === 0) return;
 
-                const servicesToDisplay = (query !== '') ? filteredServices : cat.services;
+                let optionsHtml = '';
+                cat.services.forEach((srv, idx) => {
+                    optionsHtml += `<option value="${idx}">${srv.name} (${srv.price})</option>`;
+                });
 
-                const optionsHtml = servicesToDisplay.map((srv, idx) => {
-                    if (query === '' && idx === 0) {
-                        return `<option value="" disabled selected>${srv.name}</option>`;
-                    }
-                    const originalIdx = cat.services.indexOf(srv);
-                    return `<option value="${originalIdx}">${srv.name}</option>`;
-                }).join('');
-
-                const featuresHtml = cat.features.map(f => 
-                    `<li><i class="fa-solid fa-check"></i> ${f}</li>`
-                ).join('');
-
-                const initialPrice = "---";
+                let featuresHtml = '';
+                cat.features.slice(0, 3).forEach(feat => {
+                    featuresHtml += `<li><i class="fa-solid fa-check"></i> ${feat}</li>`;
+                });
 
                 htmlContent += `
-                    <div class="product-card" onclick="openCategoryPage('${cat.id}')">
-                        <div class="product-badge">${cat.badge}</div>
+                    <div class="product-card" onclick="openCategoryDetailPage('${cat.id}')">
                         <div class="product-image-container">
-                            <img src="${cat.img}" alt="${cat.name}">
+                            <span class="product-badge">${cat.badge}</span>
+                            <img src="${cat.img}" alt="${cat.name}" loading="lazy">
                         </div>
                         <div class="product-content">
                             <div>
                                 <div class="product-category">${cat.category}</div>
-                                <div class="product-title">${cat.name}</div>
+                                <h3 class="product-title">${cat.name}</h3>
                                 <p class="product-desc">${cat.desc}</p>
                                 <ul class="features-list">
                                     ${featuresHtml}
                                 </ul>
+                            </div>
+                            <div>
                                 <div class="select-group" onclick="event.stopPropagation()">
-                                    <label>Sélectionnez votre service :</label>
-                                    <select class="duration-select" id="select-${cat.id}" onchange="updatePrice('${cat.id}')">
+                                    <label>Choisir une option :</label>
+                                    <select class="duration-select" id="select-${cat.id}" onchange="updateCardPrice(event, '${cat.id}')">
                                         ${optionsHtml}
                                     </select>
                                 </div>
-                            </div>
-                            <div class="product-footer" onclick="event.stopPropagation()">
-                                <div class="price-tag" id="price-${cat.id}">${initialPrice}</div>
-                                <div class="btn-action-group">
-                                    <button class="info-btn info-btn-attention" id="info-btn-${cat.id}" onclick="openServiceDetailModal('${cat.id}')" disabled>
-                                        <i class="fa-solid fa-circle-info"></i> Info <span class="info-arrow-animated">➔</span>
-                                    </button>
-                                    <button class="add-cart-btn" onclick="openOrderPopup('${cat.id}')">Commander</button>
+                                <div class="product-footer">
+                                    <div class="price-tag" id="price-${cat.id}">À partir de ${cat.services[1] ? cat.services[1].price : '---'}</div>
+                                    <div class="btn-action-group" onclick="event.stopPropagation()">
+                                        <button class="info-btn" onclick="openCategoryDetailPage('${cat.id}')">Détails <span class="info-arrow-animated">➔</span></button>
+                                        <button class="add-cart-btn" onclick="orderFromCard('${cat.id}')"><i class="fa-solid fa-cart-shopping"></i> Commander</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2220,35 +2216,21 @@
             });
 
             grid.innerHTML = htmlContent;
-
-            categories.forEach(cat => {
-                setTimeout(() => updatePrice(cat.id), 0);
-            });
         }
 
-        function updatePrice(catId) {
+        function updateCardPrice(event, catId) {
+            event.stopPropagation();
             const select = document.getElementById(`select-${catId}`);
             const priceTag = document.getElementById(`price-${catId}`);
-            const infoBtn = document.getElementById(`info-btn-${catId}`);
-            if (!select || !priceTag) return;
+            const cat = categories.find(c => c.id === catId);
+            if (!select || !priceTag || !cat) return;
 
             const selectedIdx = select.value;
-            const cat = categories.find(c => c.id === catId);
-
-            if (selectedIdx === "" || selectedIdx === null) {
-                priceTag.innerText = "---";
-                if (infoBtn) {
-                    infoBtn.disabled = true;
-                    infoBtn.classList.add('info-btn-attention');
-                }
-                return;
-            }
-
-            const service = cat.services[selectedIdx];
-            priceTag.innerText = service.price;
-            if (infoBtn) {
-                infoBtn.disabled = false;
-                infoBtn.classList.remove('info-btn-attention');
+            const selectedService = cat.services[selectedIdx];
+            if (selectedIdx === "0" || !selectedService) {
+                priceTag.innerText = cat.services[1] ? `À partir de ${cat.services[1].price}` : '---';
+            } else {
+                priceTag.innerText = selectedService.price;
             }
         }
 
@@ -2256,9 +2238,9 @@
             const input = document.getElementById('searchInput');
             const clearBtn = document.getElementById('searchClearBtn');
             if (!input) return;
-
+            
             const val = input.value;
-            if (val.length > 0) {
+            if (val.trim() !== '') {
                 clearBtn.classList.add('visible');
             } else {
                 clearBtn.classList.remove('visible');
@@ -2271,226 +2253,231 @@
             const clearBtn = document.getElementById('searchClearBtn');
             if (input) {
                 input.value = '';
-                if (clearBtn) clearBtn.classList.remove('visible');
                 renderProducts('');
+            }
+            if (clearBtn) {
+                clearBtn.classList.remove('visible');
             }
         }
 
-        function openCategoryPage(catId) {
+        function orderFromCard(catId) {
+            const select = document.getElementById(`select-${catId}`);
             const cat = categories.find(c => c.id === catId);
             if (!cat) return;
 
-            document.getElementById('mainPageContainer').style.display = 'none';
+            let selectedServiceIdx = 1;
+            if (select) {
+                selectedServiceIdx = parseInt(select.value) || 1;
+            }
+            if (selectedServiceIdx === 0) selectedServiceIdx = 1;
+            const srv = cat.services[selectedServiceIdx] || cat.services[1];
+
+            currentOrderText = `Bonjour JACKDA10, je souhaite commander la prestation suivante :\n• Catégorie : ${cat.name}\n• Service : ${srv.name}\n• Tarif : ${srv.price}`;
+            showOrderPopup(currentOrderText);
+        }
+
+        function showOrderPopup(summaryText) {
+            const popup = document.getElementById('orderPopupModal');
+            const summaryEl = document.getElementById('popupOrderSummary');
+            const confirmBtn = document.getElementById('confirmOrderSnapBtn');
+            if (!popup || !summaryEl || !confirmBtn) return;
+
+            summaryEl.innerText = summaryText;
+            popup.classList.add('open');
+
+            confirmBtn.onclick = function() {
+                navigator.clipboard.writeText(currentOrderText).then(() => {
+                    showCopyNotification();
+                    setTimeout(() => {
+                        window.open(mySnapchatUrl, '_blank');
+                    }, 600);
+                }).catch(() => {
+                    window.open(mySnapchatUrl, '_blank');
+                });
+                closeOrderPopup();
+            };
+        }
+
+        function closeOrderPopup() {
+            const popup = document.getElementById('orderPopupModal');
+            if (popup) popup.classList.remove('open');
+        }
+
+        function openCategoryDetailPage(catId) {
+            const cat = categories.find(c => c.id === catId);
+            if (!cat) return;
+
+            const mainContainer = document.getElementById('mainPageContainer');
             const detailContainer = document.getElementById('categoryDetailPageContainer');
             const detailContent = document.getElementById('categoryDetailContent');
+            if (!mainContainer || !detailContainer || !detailContent) return;
 
-            let servicesListHtml = '';
+            mainContainer.style.display = 'none';
+            detailContainer.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            let servicesHtml = '';
             cat.services.forEach((srv, idx) => {
                 if (idx === 0) return;
-                servicesListHtml += `
-                    <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; backdrop-filter: blur(10px);">
-                        <div style="flex: 1; min-width: 250px;">
+                servicesHtml += `
+                    <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                        <div style="flex: 1; min-width: 240px;">
                             <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; color: #fff;">${srv.name}</h4>
-                            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; word-break: break-word;">${srv.info}</p>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">${srv.info}</p>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <span style="font-size: 1.15rem; font-weight: 800; color: #ef4444; white-space: nowrap;">${srv.price}</span>
-                            <button class="add-cart-btn" onclick="openOrderPopupDirect('${cat.id}', ${idx})">Commander</button>
+                        <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                            <span style="font-size: 1.15rem; font-weight: 800; color: #ef4444;">${srv.price}</span>
+                            <button class="add-cart-btn" onclick="orderSpecificService('${cat.name}', '${srv.name.replace(/'/g, "\\'")}', '${srv.price}')">
+                                <i class="fa-solid fa-cart-shopping"></i> Commander
+                            </button>
                         </div>
                     </div>
                 `;
             });
 
-            const featuresListHtml = cat.features.map(f => `<li><i class="fa-solid fa-check" style="color: #dc2626;"></i> ${f}</li>`).join('');
+            let featuresHtml = '';
+            cat.features.forEach(feat => {
+                featuresHtml += `<div style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #e2e8f0;"><i class="fa-solid fa-check" style="color: #dc2626;"></i> ${feat}</div>`;
+            });
 
             detailContent.innerHTML = `
-                <div style="background: linear-gradient(145deg, rgba(18, 18, 24, 0.95), rgba(10, 10, 15, 0.8)); border: 1px solid var(--border); border-radius: 24px; padding: clamp(20px, 4vw, 40px); margin-bottom: 30px; backdrop-filter: blur(12px);">
-                    <div style="display: flex; gap: 30px; flex-wrap: wrap; align-items: center;">
-                        <div style="flex: 1; min-width: 280px;">
-                            <div style="font-size: 0.75rem; color: #ef4444; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">${cat.category}</div>
-                            <h1 style="font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 12px; line-height: 1.2;">${cat.name}</h1>
-                            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">${cat.desc}</p>
-                            <ul style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;">
-                                ${featuresListHtml}
-                            </ul>
-                        </div>
-                        <div style="width: 320px; max-width: 100%; height: 220px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border);">
+                <div style="background: linear-gradient(145deg, rgba(18, 18, 24, 0.95), rgba(10, 10, 15, 0.8)); border: 1px solid var(--border); border-radius: 24px; padding: clamp(20px, 4vw, 35px); margin-bottom: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+                    <div style="display: flex; gap: 25px; flex-wrap: wrap; align-items: center;">
+                        <div style="width: 220px; height: 160px; border-radius: 16px; overflow: hidden; flex-shrink: 0; border: 1px solid var(--border);">
                             <img src="${cat.img}" alt="${cat.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div style="flex: 1; min-width: 260px;">
+                            <span style="font-size: 0.72rem; color: #ef4444; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; background: rgba(220,38,38,0.1); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(220,38,38,0.3); display: inline-block; margin-bottom: 10px;">${cat.category}</span>
+                            <h2 style="font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 800; margin-bottom: 10px; color: #fff;">${cat.name}</h2>
+                            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.6;">${cat.desc}</p>
+                            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                ${featuresHtml}
+                            </div>
                         </div>
                     </div>
                 </div>
-                <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 20px;">Tous les services disponibles de cette catégorie :</h3>
-                ${servicesListHtml}
+                <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-list-check" style="color: #dc2626;"></i> Tarifs & Prestations disponibles
+                </h3>
+                <div>
+                    ${servicesHtml}
+                </div>
             `;
+        }
 
-            detailContainer.style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        function orderSpecificService(catName, srvName, srvPrice) {
+            currentOrderText = `Bonjour JACKDA10, je souhaite commander la prestation suivante :\n• Catégorie : ${catName}\n• Service : ${srvName}\n• Tarif : ${srvPrice}`;
+            showOrderPopup(currentOrderText);
         }
 
         function showMainPage() {
-            document.getElementById('categoryDetailPageContainer').style.display = 'none';
-            document.getElementById('mainPageContainer').style.display = 'block';
+            const mainContainer = document.getElementById('mainPageContainer');
+            const detailContainer = document.getElementById('categoryDetailPageContainer');
+            if (!mainContainer || !detailContainer) return;
+
+            detailContainer.style.display = 'none';
+            mainContainer.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function openTrialModal() {
-            document.getElementById('trialModal').classList.add('open');
+            const modal = document.getElementById('trialModal');
+            if (modal) modal.classList.add('open');
         }
 
         function closeTrialModal() {
-            document.getElementById('trialModal').classList.remove('open');
+            const modal = document.getElementById('trialModal');
+            if (modal) modal.classList.remove('open');
         }
-
-        function openServiceDetailModal(catId) {
-            const select = document.getElementById(`select-${catId}`);
-            if (!select || select.value === "") return;
-
-            const cat = categories.find(c => c.id === catId);
-            const service = cat.services[select.value];
-
-            document.getElementById('modalCatName').innerText = cat.name;
-            document.getElementById('modalServiceName').innerText = service.name;
-            document.getElementById('modalServiceDesc').innerHTML = service.info;
-            document.getElementById('modalServicePrice').innerText = service.price;
-
-            currentOrderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• Catégorie : ${cat.name}\n• Service : ${service.name}\n• Tarif : ${service.price}`;
-            
-            document.getElementById('modalOrderBtn').onclick = function() {
-                closeServiceDetailModal();
-                openOrderPopupWithText(currentOrderText);
-            };
-
-            document.getElementById('serviceDetailModal').classList.add('open');
-        }
-
-        function closeServiceDetailModal() {
-            document.getElementById('serviceDetailModal').classList.remove('open');
-        }
-
-        function openOrderPopup(catId) {
-            const select = document.getElementById(`select-${catId}`);
-            if (!select || select.value === "") {
-                alert("Veuillez d'abord sélectionner un service dans le menu déroulant.");
-                return;
-            }
-
-            const cat = categories.find(c => c.id === catId);
-            const service = cat.services[select.value];
-
-            currentOrderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• Catégorie : ${cat.name}\n• Service : ${service.name}\n• Tarif : ${service.price}`;
-            
-            document.getElementById('popupOrderSummary').innerText = `${cat.name} - ${service.name} (${service.price})`;
-            document.getElementById('orderPopupModal').classList.add('open');
-        }
-
-        function openOrderPopupDirect(catId, serviceIdx) {
-            const cat = categories.find(c => c.id === catId);
-            const selectedService = cat.services[serviceIdx];
-
-            currentOrderText = `Bonjour JACKDA10, je souhaite commander cette prestation :\n• Catégorie : ${cat.name}\n• Service : ${selectedService.name}\n• Tarif : ${selectedService.price}`;
-            
-            document.getElementById('popupOrderSummary').innerText = `${cat.name} - ${selectedService.name} (${selectedService.price})`;
-            document.getElementById('orderPopupModal').classList.add('open');
-        }
-
-        function openOrderPopupWithText(text) {
-            currentOrderText = text;
-            document.getElementById('popupOrderSummary').innerText = text;
-            document.getElementById('orderPopupModal').classList.add('open');
-        }
-
-        function closeOrderPopup() {
-            document.getElementById('orderPopupModal').classList.remove('open');
-        }
-
-        document.getElementById('confirmOrderSnapBtn').onclick = function() {
-            navigator.clipboard.writeText(currentOrderText).then(() => {
-                const notif = document.getElementById('copyNotification');
-                notif.classList.add('show');
-                setTimeout(() => notif.classList.remove('show'), 3500);
-                setTimeout(() => {
-                    window.open(mySnapchatUrl, '_blank');
-                }, 800);
-            }).catch(() => {
-                window.open(mySnapchatUrl, '_blank');
-            });
-            closeOrderPopup();
-        };
 
         function copyTrialForSnap() {
-            const trialText = "Bonjour JACKDA10, je souhaite obtenir une consultation gratuite concernant mon dossier administratif.";
+            const trialText = "Bonjour JACKDA10, je souhaite obtenir ma consultation gratuite pour mon dossier.";
             navigator.clipboard.writeText(trialText).then(() => {
-                const notif = document.getElementById('copyNotification');
-                notif.classList.add('show');
-                setTimeout(() => notif.classList.remove('show'), 3500);
-            });
+                showCopyNotification();
+            }).catch(() => {});
+        }
+
+        function showCopyNotification() {
+            const notif = document.getElementById('copyNotification');
+            if (!notif) return;
+            notif.classList.add('show');
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, 3000);
         }
 
         function toggleFaq(el) {
             const item = el.parentElement;
-            const wasActive = item.classList.contains('active');
-            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-            if (!wasActive) {
-                item.classList.add('active');
-            }
+            const allItems = document.querySelectorAll('.faq-item');
+            allItems.forEach(i => {
+                if (i !== item) i.classList.remove('active');
+            });
+            item.classList.toggle('active');
         }
 
+        function scrollReviews(direction) {
+            const track = document.getElementById('reviewsTrack');
+            if (!track) return;
+            const cardWidth = track.querySelector('.review-card') ? track.querySelector('.review-card').offsetWidth + 20 : 300;
+            track.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
+        }
+
+        // CORRECTIONS APPORTÉES :
+        // 1. Boutons de défilement rapide haut/bas entièrement réparés
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function scrollToBottom() {
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
         }
 
-        // Fonction corrigée pour les flèches du carrousel d'avis
-        function scrollReviews(direction) {
+        // 2. Défilement automatique et tactile des avis sur mobile réparé et optimisé
+        let isAutoScrollingReviews = true;
+        let reviewScrollTimer = null;
+
+        function initReviewAutoScroll() {
             const track = document.getElementById('reviewsTrack');
-            if (track) {
-                const scrollAmount = 320; // Largeur d'une carte d'avis + gap
-                track.scrollBy({
-                    left: direction * scrollAmount,
-                    behavior: 'smooth'
-                });
+            if (!track) return;
+
+            // Défilement automatique fluide en boucle
+            function stepAutoScroll() {
+                if (!isAutoScrollingReviews) return;
+                if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+                    track.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    track.scrollBy({ left: 1, behavior: 'smooth' });
+                }
             }
+
+            reviewScrollTimer = setInterval(stepAutoScroll, 30);
+
+            // Pause du défilement automatique lors d'un toucher ou d'un survol pour ne pas bloquer l'utilisateur
+            const pauseAutoScroll = () => { isAutoScrollingReviews = false; };
+            const resumeAutoScroll = () => { 
+                setTimeout(() => { isAutoScrollingReviews = true; }, 3000); 
+            };
+
+            track.addEventListener('mouseenter', pauseAutoScroll);
+            track.addEventListener('mouseleave', resumeAutoScroll);
+            track.addEventListener('touchstart', pauseAutoScroll, { passive: true });
+            track.addEventListener('touchend', resumeAutoScroll, { passive: true });
         }
 
-        // Script gérant le rendu initial et le défilement automatique des avis
+        // Initialisation globale au chargement de la page
         document.addEventListener('DOMContentLoaded', () => {
             renderProducts();
-            
-            const reviewsTrack = document.getElementById('reviewsTrack');
-            if (reviewsTrack) {
-                let scrollSpeed = 1;
-                let isPaused = false;
+            initReviewAutoScroll();
 
-                function autoScroll() {
-                    if (!isPaused) {
-                        reviewsTrack.scrollLeft += scrollSpeed;
-                        if (reviewsTrack.scrollLeft >= (reviewsTrack.scrollWidth - reviewsTrack.clientWidth - 5)) {
-                            reviewsTrack.scrollLeft = 0;
-                        }
-                    }
-                }
-
-                let scrollInterval = setInterval(autoScroll, 30);
-
-                reviewsTrack.addEventListener('mouseenter', () => {
-                    isPaused = true;
-                });
-
-                reviewsTrack.addEventListener('mouseleave', () => {
-                    isPaused = false;
-                });
-
-                // Support tactile pour stopper le défilement auto quand l'utilisateur touche les avis sur téléphone
-                reviewsTrack.addEventListener('touchstart', () => {
-                    isPaused = true;
-                }, {passive: true});
-
-                reviewsTrack.addEventListener('touchend', () => {
-                    setTimeout(() => { isPaused = false; }, 3000);
-                }, {passive: true});
+            // Rotation automatique des images d'arrière-plan du site
+            const slides = document.querySelectorAll('.bg-slide');
+            let currentSlide = 0;
+            if (slides.length > 0) {
+                setInterval(() => {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                }, 6000);
             }
         });
     </script>
