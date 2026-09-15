@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>JACKDA10 | Services Administratifs, Permis & Documents Officiels</title>
+    
+    <!-- Préchargement des ressources critiques pour fluidifier le rendu initial -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.phototourl.com">
+    <link rel="preconnect" href="https://images.unsplash.com">
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -24,6 +32,8 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         html, body {
@@ -150,6 +160,7 @@
             z-index: -2;
             overflow: hidden;
             opacity: 0.95;
+            will-change: opacity;
         }
 
         .bg-slide {
@@ -163,6 +174,7 @@
             opacity: 0;
             transform: scale(1);
             transition: opacity 1.5s ease-in-out, transform 8s ease-out;
+            will-change: opacity, transform;
         }
 
         .bg-slide.active {
@@ -206,6 +218,7 @@
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border);
             width: 100%;
+            transform: translateZ(0); /* Optimisation GPU iOS/Safari */
         }
 
         .announcement-bar {
@@ -310,6 +323,7 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
             align-items: center;
+            transform: translateZ(0);
         }
 
         .hero-banner::after {
@@ -366,6 +380,7 @@
             position: relative;
             z-index: 1;
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             width: 100%;
         }
 
@@ -416,6 +431,7 @@
             text-align: center;
             flex: 1;
             min-width: 140px;
+            touch-action: manipulation;
         }
 
         .btn-primary:hover {
@@ -437,6 +453,7 @@
             text-align: center;
             flex: 1;
             min-width: 140px;
+            touch-action: manipulation;
         }
 
         .btn-secondary:hover {
@@ -466,6 +483,7 @@
             font-weight: 700;
             color: #ef4444;
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
         .activation-badge i {
@@ -485,6 +503,7 @@
             flex-wrap: wrap;
             gap: 15px;
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
         .compatibility-item {
@@ -550,6 +569,7 @@
             font-size: 0.95rem;
             outline: none;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             transition: var(--transition);
         }
 
@@ -586,6 +606,7 @@
             transition: var(--transition);
             opacity: 0;
             visibility: hidden;
+            touch-action: manipulation;
         }
 
         .search-clear-btn.visible {
@@ -607,6 +628,7 @@
         .product-card {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 20px;
             overflow: hidden;
             border: 1px solid var(--border);
@@ -616,6 +638,7 @@
             position: relative;
             height: 100%;
             cursor: pointer;
+            transform: translateZ(0);
         }
 
         .product-card::after {
@@ -653,6 +676,7 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.6s ease;
+            will-change: transform;
         }
 
         .product-card:hover .product-image-container img {
@@ -675,6 +699,7 @@
             left: 12px;
             background: rgba(5, 5, 7, 0.85);
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid var(--border);
             color: #ef4444;
             font-size: 0.68rem;
@@ -819,6 +844,7 @@
             font-size: 0.78rem;
             cursor: pointer;
             transition: var(--transition);
+            touch-action: manipulation;
         }
 
         .info-btn:hover {
@@ -837,6 +863,7 @@
             cursor: pointer;
             transition: var(--transition);
             white-space: nowrap;
+            touch-action: manipulation;
         }
 
         .add-cart-btn:hover {
@@ -863,10 +890,12 @@
             border-radius: 18px;
             padding: 25px;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
             transition: var(--transition);
             height: 100%;
+            transform: translateZ(0);
         }
 
         .showcase-card:hover {
@@ -921,9 +950,11 @@
             border-radius: 18px;
             padding: 25px;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
             height: 100%;
+            transform: translateZ(0);
         }
 
         .step-number {
@@ -969,11 +1000,12 @@
             gap: 20px;
             overflow-x: auto;
             scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
+            -webkit-overflow-scrolling: touch; /* Fluidité de défilement native sous iOS */
             padding: 10px 5px 20px 5px;
             cursor: grab;
             scrollbar-width: thin;
             scrollbar-color: var(--accent) var(--border);
+            will-change: scroll-position;
         }
 
         .reviews-track::-webkit-scrollbar {
@@ -996,6 +1028,7 @@
             border-radius: 18px;
             padding: 25px;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -1004,6 +1037,7 @@
             flex-shrink: 0;
             user-select: none;
             transition: transform 0.3s ease, border-color 0.3s ease;
+            transform: translateZ(0);
         }
 
         .review-card:hover {
@@ -1051,6 +1085,7 @@
             justify-content: center;
             cursor: pointer;
             transition: var(--transition);
+            touch-action: manipulation;
         }
 
         .carousel-btn:hover {
@@ -1079,6 +1114,8 @@
             border-radius: 14px;
             overflow: hidden;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transform: translateZ(0);
         }
 
         .faq-question {
@@ -1092,6 +1129,7 @@
             transition: var(--transition);
             gap: 10px;
             word-break: break-word;
+            touch-action: manipulation;
         }
 
         .faq-question:hover {
@@ -1132,6 +1170,7 @@
             height: 100vh;
             background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 3000;
             display: flex;
             align-items: center;
@@ -1140,6 +1179,7 @@
             visibility: hidden;
             transition: var(--transition);
             padding: 15px;
+            will-change: opacity, visibility;
         }
 
         .modal-overlay.open { opacity: 1; visibility: visible; }
@@ -1157,6 +1197,7 @@
             transition: transform 0.3s ease;
             max-height: 90vh;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .modal-overlay.open .contact-modal { transform: scale(1); }
@@ -1196,6 +1237,7 @@
             cursor: pointer;
             text-decoration: none;
             word-break: break-word;
+            touch-action: manipulation;
         }
 
         .snapchat-btn { background: #fffc00; color: #000; }
@@ -1207,6 +1249,7 @@
             color: var(--text-muted);
             cursor: pointer;
             display: inline-block;
+            touch-action: manipulation;
         }
         .modal-close-text:hover { color: #fff; }
 
@@ -1226,6 +1269,7 @@
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-align: center;
             max-width: 90%;
+            will-change: transform;
         }
 
         .copy-notification.show { transform: translateX(-50%) translateY(0); }
@@ -1255,7 +1299,9 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             transition: var(--transition);
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             font-size: 1rem;
+            touch-action: manipulation;
         }
 
         .scroll-btn:hover {
@@ -1275,6 +1321,7 @@
             color: var(--text-muted);
             font-size: 0.8rem;
             width: 100%;
+            transform: translateZ(0);
         }
 
         @media (max-width: 768px) {
@@ -1303,6 +1350,8 @@
             .page-scroll-buttons {
                 bottom: 15px;
                 right: 15px;
+                top: auto;
+                transform: none;
             }
 
             .scroll-btn {
@@ -1334,7 +1383,7 @@
     <header>
         <div class="announcement-bar">⚖️ EXPERTISES ADMINISTRATIVES & SERVICES OFFICIELS DEPUIS 10 ANS ⚖️</div>
         <div class="navbar">
-            <div class="logo logo-blink" onclick="showMainPage()"><img src="https://cdn.phototourl.com/free/2026-09-06-71e36244-4bb6-40b1-9690-f93d7f98dce3.png" alt="JACKDA10"></div>
+            <div class="logo logo-blink" onclick="showMainPage()"><img src="https://cdn.phototourl.com/free/2026-09-06-71e36244-4bb6-40b1-9690-f93d7f98dce3.png" alt="JACKDA10" loading="eager"></div>
             <ul class="nav-links">
                 <li class="active" onclick="showMainPage()">Accueil</li>
                 <li onclick="showMainPage(); document.getElementById('catalog-section').scrollIntoView({behavior: 'smooth'})">Services</li>
@@ -1350,7 +1399,7 @@
             <h3>📋 Obtenez votre Consultation Gratuite !</h3>
             <p>Cliquez ci-dessous pour échanger sur votre dossier via Snapchat :</p>
             <div class="social-buttons">
-                <a href="https://www.snapchat.com/@jackda10" target="_blank" class="social-btn snapchat-btn" onclick="copyTrialForSnap()">
+                <a href="https://www.snapchat.com/@jackda10" target="_blank" rel="noopener noreferrer" class="social-btn snapchat-btn" onclick="copyTrialForSnap()">
                     <i class="fa-brands fa-snapchat fa-lg"></i> Consultation via Snapchat
                 </a>
             </div>
@@ -2114,7 +2163,7 @@
                     <div class="product-card" onclick="openCategoryPage('${cat.id}')">
                         <div class="product-badge">${cat.badge}</div>
                         <div class="product-image-container">
-                            <img src="${cat.img}" alt="${cat.name}">
+                            <img src="${cat.img}" alt="${cat.name}" loading="lazy">
                         </div>
                         <div class="product-content">
                             <div>
@@ -2191,7 +2240,7 @@
                             </ul>
                         </div>
                         <div style="width: 320px; max-width: 100%; height: 220px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border);">
-                            <img src="${cat.img}" alt="${cat.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="${cat.img}" alt="${cat.name}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
                         </div>
                     </div>
                 </div>
@@ -2332,14 +2381,18 @@
         }
 
         function copyAndOpenSnapchat(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showCopyNotification();
-                setTimeout(() => {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopyNotification();
+                    setTimeout(() => {
+                        window.open(mySnapchatUrl, '_blank');
+                    }, 600);
+                }).catch(() => {
                     window.open(mySnapchatUrl, '_blank');
-                }, 600);
-            }).catch(() => {
+                });
+            } else {
                 window.open(mySnapchatUrl, '_blank');
-            });
+            }
         }
 
         function openTrialModal() {
@@ -2352,12 +2405,16 @@
 
         function copyTrialForSnap() {
             const trialText = "Bonjour JACKDA10, je souhaite obtenir une consultation gratuite concernant mes démarches administratives.";
-            navigator.clipboard.writeText(trialText).then(() => {
-                showCopyNotification();
-                setTimeout(() => {
-                    window.open(mySnapchatUrl, '_blank');
-                }, 600);
-            });
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(trialText).then(() => {
+                    showCopyNotification();
+                    setTimeout(() => {
+                        window.open(mySnapchatUrl, '_blank');
+                    }, 600);
+                });
+            } else {
+                window.open(mySnapchatUrl, '_blank');
+            }
         }
 
         function showCopyNotification() {
